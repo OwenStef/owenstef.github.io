@@ -1,337 +1,705 @@
-/* Owen Stefanakos — one stylesheet for every page.
-   To change the look, edit the list just below: colours, the typeface, widths.
+/* Owen Stefanakos: one stylesheet for the whole site.
+   To change the look, edit the list of tokens just below: colours, typefaces, widths.
    Everything else follows from it. */
 
-/* Two typefaces, both SIL Open Font License (fonts/LICENSE-*.txt):
-   Familjen Grotesk for the name and headings, Schibsted Grotesk for reading. */
-@font-face {
-  font-family: "Familjen Grotesk";
-  src: url("fonts/familjen-grotesk-latin-wght-normal.woff2") format("woff2");
-  font-weight: 400 700;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Schibsted Grotesk";
-  src: url("fonts/schibsted-grotesk-latin-wght-normal.woff2") format("woff2");
-  font-weight: 400 900;
-  font-display: swap;
-}
+/* ---------- tokens ---------- */
 
 :root {
-  --bg: #ffffff;        /* page */
-  --ink: #141414;       /* text */
-  --muted: #5e5e5b;     /* dates, places, captions */
-  --soft: #eeede9;      /* photo placeholders, the odd rule */
-  --hl: #ffd31a;        /* the one colour: fire-shirt yellow, used like a highlighter */
-  --on-hl: #141414;     /* text on the yellow */
-  --font: "Schibsted Grotesk", "Helvetica Neue", Arial, system-ui, sans-serif;
-  --display: "Familjen Grotesk", "Helvetica Neue", Arial, system-ui, sans-serif;
-  --max: 80rem;         /* widest the page gets */
-  --text: 40rem;        /* longest a line of reading text gets */
-  --gutter: clamp(1rem, 4.5vw, 3.5rem);
+  --paper: #ffffff;     /* page background */
+  --ink: #161614;       /* text, bars, lines */
+  --muted: #5c5b55;     /* small print: dates, places, captions */
+  --winter: #c6d8e5;    /* the four season fields behind the chart */
+  --spring: #c2d8a2;
+  --summer: #ffd42e;
+  --hl: #ffd42e;        /* link highlighter: stays bright in the dark scheme too */
+  --fall: #ed9c68;
+  --line: #161614;      /* the one line over the footer */
+  --serif: "Besley", "Besley Fallback", Georgia, serif;
+  --sans: "Archivo", "Archivo Fallback", Arial, sans-serif;
+  --measure: 72rem;     /* widest the page gets */
+  --prose: 38rem;       /* longest a line of reading text gets */
+  --gap: clamp(3.5rem, 8vw, 6rem);   /* space between sections */
+  --side: clamp(1.125rem, 4vw, 3rem);
+  --yc: 3.75rem;          /* width of the year column in the chart */
   color-scheme: light dark;
 }
+@media (min-width: 60rem) { :root { --yc: 4.5rem; } }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #121211;
+    --paper: #131312;
     --ink: #edece7;
-    --muted: #a4a39d;
-    --soft: #242422;
+    --muted: #a3a29b;
+    --winter: #24425a;
+    --spring: #33522a;
+    --summer: #776000;
+    --fall: #713a1b;
   }
 }
+
+/* ---------- fonts ----------
+   Besley (a Clarendon) for the name, headings and reading; Archivo (a gothic,
+   with a width axis) for small print and the chart. Both SIL Open Font
+   License, files and licences in fonts/. The two "Fallback" faces are the
+   system font stretched to the same size, so the page does not jump when the
+   real font arrives. */
+@font-face {
+  font-family: "Besley";
+  src: url("fonts/besley-latin-wght-normal.woff2") format("woff2");
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Besley";
+  src: url("fonts/besley-latin-wght-italic.woff2") format("woff2");
+  font-weight: 400 900;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Archivo";
+  src: url("fonts/archivo-latin-wdth-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Besley Fallback";
+  src: local("Georgia");
+  size-adjust: 107%;
+}
+@font-face {
+  font-family: "Archivo Fallback";
+  src: local("Arial");
+  size-adjust: 97.4%;
+}
+
+/* To see every placeholder on the page, uncomment this rule.
+.fill { outline: 2px dashed #d33; outline-offset: 2px; } */
 
 /* ---------- base ---------- */
 
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 1rem;
+}
 body {
   margin: 0;
-  background: var(--bg);
+  background: var(--paper);
   color: var(--ink);
-  font-family: var(--font);
+  font-family: var(--serif);
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.6;
   font-kerning: normal;
+  overflow-wrap: break-word;
   -webkit-font-smoothing: antialiased;
 }
-@media (min-width: 60rem) { body { font-size: 1.125rem; } }
-
-h1, h2, h3, p, ul, ol, figure, dl, dd { margin: 0; }
-ul, ol { padding: 0; }
-img, svg { display: block; max-width: 100%; height: auto; }
-
-a {
-  color: inherit;
-  text-decoration-line: underline;
-  text-decoration-thickness: 0.075em;
-  text-underline-offset: 0.18em;
-}
-a:hover { background: var(--hl); color: var(--on-hl); text-decoration-color: transparent; }
-a:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; text-decoration: none; }
-
-mark, .hl {
-  background: var(--hl);
-  color: var(--on-hl);
-  padding: 0.02em 0.28em;
-  margin: 0 -0.08em;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-}
-
-.skip { position: absolute; left: -999rem; }
-.skip:focus { left: var(--gutter); top: 0.75rem; background: var(--hl); color: var(--on-hl); padding: 0.5rem 0.75rem; z-index: 2; }
-
-.wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
-
-/* Filler Owen has not replaced yet carries class="fill". Uncomment to see it all:
-.fill { outline: 2px dashed #e5484d; outline-offset: 2px; } */
-
-/* ---------- top bar ---------- */
-
-.bar {
-  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
-  gap: 0.25rem 1.5rem;
-  padding-top: 1.25rem;
-  font-size: 1rem;
-}
-.bar .home { font-weight: 700; text-decoration: none; display: inline-block; padding: 0.6rem 0; }
-.bar:has(> .home) { padding-bottom: 0.5rem; }
-.bar nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
-.bar nav a { text-decoration: none; display: inline-block; padding: 0.6rem 0; }
-.bar nav a:hover { padding-inline: 0.25rem; margin-inline: -0.25rem; }
-.bar nav a[aria-current="page"] { text-decoration: underline; }
-
-/* ---------- home: the opening, a band of the yellow ---------- */
-
-.band { background: var(--hl); color: var(--on-hl); }
-header.band { margin-bottom: -1px; padding-bottom: 1px; }
-.band .opening { padding-bottom: clamp(3rem, 7vw, 6rem); }
-.band a:hover { background: var(--on-hl); color: var(--hl); }
-.band a:focus-visible { outline-color: var(--on-hl); }
-.band .ph { background: rgb(0 0 0 / 0.085); color: rgb(0 0 0 / 0.7); }
-.opening { padding-top: clamp(2rem, 7vw, 5rem); }
-.name {
-  font-family: var(--display);
-  font-size: clamp(3.6rem, 13.5vw, 11.5rem);
-  font-weight: 700;
-  line-height: 0.84;
-  letter-spacing: -0.05em;
-  margin-left: -0.055em;
-  overflow-wrap: anywhere;
-}
-.opening-grid {
-  display: grid; gap: 2rem;
-  margin-top: clamp(1.75rem, 4vw, 3rem);
-}
-.intro {
-  font-size: clamp(1.375rem, 2.55vw, 2.125rem);
-  line-height: 1.22;
-  letter-spacing: -0.015em;
-  max-width: 30ch;
-}
-.now { margin-top: 1.5rem; max-width: 36rem; }
-.now b { font-weight: 700; background: var(--on-hl); color: var(--hl); padding: 0.05em 0.35em; margin-right: 0.35em; }
-.opening .ph { aspect-ratio: 4 / 5; }
-@media (min-width: 56rem) {
-  .opening-grid { grid-template-columns: repeat(12, 1fr); gap: 1.5rem; align-items: start; }
-  .opening-grid > .words { grid-column: 1 / span 7; }
-  .opening-grid > figure { grid-column: 9 / span 4; margin-top: 0.5rem; }
-}
-
-/* ---------- sections ---------- */
-
-.block { margin-top: clamp(5rem, 11vw, 9rem); scroll-margin-top: 1.5rem; }
-.block > h2, .block-head h2 {
-  font-family: var(--display);
-  font-size: clamp(2.25rem, 5.4vw, 4.5rem);
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.035em;
-}
-.block-head { display: grid; gap: 0.75rem; margin-bottom: clamp(1.75rem, 4vw, 3rem); }
-.block-head p { color: var(--muted); max-width: 34rem; }
-.block > h2 { margin-bottom: clamp(1.75rem, 4vw, 3rem); }
-
-h3 { font-family: var(--display); font-size: 1.5rem; font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; }
-.years { color: var(--muted); font-weight: 400; }
-
-/* ---------- things I've made ---------- */
-
-.lead-work { display: grid; gap: 1.25rem 1.5rem; }
-.lead-work h3 { font-size: clamp(1.75rem, 3.2vw, 2.5rem); }
-.lead-work .words p { margin-top: 0.75rem; max-width: 30rem; }
-.lead-work .shot { background: var(--soft); padding: clamp(0.75rem, 2.5vw, 2rem) clamp(0.75rem, 2.5vw, 2rem) 0; overflow: hidden; }
-.lead-work .shot img { box-shadow: 0 0 0 1px rgb(0 0 0 / 0.06); }
-@media (min-width: 56rem) {
-  .lead-work { grid-template-columns: repeat(12, 1fr); align-items: end; }
-  .lead-work > figure { grid-column: 1 / span 8; }
-  .lead-work > .words { grid-column: 9 / span 4; padding-bottom: 0.25rem; }
-}
-
-.works { display: grid; gap: 3rem 1.5rem; margin-top: clamp(3.5rem, 7vw, 5.5rem); }
-.works .ph { aspect-ratio: 3 / 2; }
-.works h3 { margin-top: 1rem; }
-.works p { margin-top: 0.5rem; max-width: 32rem; }
-@media (min-width: 46rem) { .works { grid-template-columns: 1fr 1fr; } .works > :nth-child(2) { margin-top: clamp(3rem, 8vw, 7rem); } }
-
-.smaller { margin-top: clamp(3.5rem, 7vw, 5rem); display: grid; gap: 0.5rem; }
-.smaller h3 { font-size: 1.125rem; font-weight: 700; letter-spacing: 0; }
-.smaller ul { list-style: none; display: grid; gap: 0.6rem; max-width: 42rem; }
-.smaller li strong { font-weight: 700; }
-
-.more-link { display: inline-block; margin-top: 1rem; font-weight: 700; }
-
-/* ---------- photo placeholders: a <figure class="ph"> until there is a picture ---------- */
-
-.ph {
-  background: var(--soft);
-  display: flex; align-items: flex-end;
-  padding: 0.85rem 1rem;
-  color: var(--muted);
-  font-size: 0.875rem; line-height: 1.35;
-}
-figure.photo img { width: 100%; }
-figcaption { color: var(--muted); font-size: 0.9375rem; margin-top: 0.6rem; max-width: var(--text); }
-.ph figcaption, .ph > span { margin: 0; }
-
-/* ---------- seasons: everything, newest first ---------- */
-
-.seasons { display: grid; }
-.year { display: grid; gap: 0.25rem 1.5rem; padding: 1.5rem 0 1.75rem; border-top: 2px solid var(--ink); }
-.year:last-child { border-bottom: 2px solid var(--ink); }
-.year > h3 { font-size: clamp(1.75rem, 3.4vw, 2.75rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
-.year ol { list-style: none; display: grid; gap: 0.9rem; }
-.entry { display: grid; gap: 0 1.5rem; }
-.entry .when, .entry .where { color: var(--muted); }
-.entry .what { max-width: 36rem; }
-.entry .what strong { font-weight: 700; }
-@media (max-width: 47.99rem) {
-  .entry .when { order: 2; font-size: 0.9375rem; }
-  .entry .where { order: 3; font-size: 0.9375rem; }
-  .entry .when::after { content: ""; }
-}
-@media (min-width: 48rem) {
-  .year { grid-template-columns: repeat(12, 1fr); }
-  .year > h3 { grid-column: 1 / span 2; }
-  .year ol { grid-column: 3 / span 10; }
-  .entry { grid-template-columns: 11rem 1fr 13rem; }
-  .entry .where { text-align: right; }
-}
-
-/* ---------- writing ---------- */
-
-.writing { display: grid; gap: 2.5rem; }
-.feature-piece h3 { font-size: clamp(1.75rem, 3.4vw, 2.75rem); font-weight: 700; letter-spacing: -0.03em; max-width: 22ch; line-height: 1.05; }
-.feature-piece .source { color: var(--muted); margin-top: 0.75rem; max-width: 40rem; }
-.feature-piece p.abstract { margin-top: 1rem; max-width: var(--text); }
-.pieces { list-style: none; display: grid; gap: 0.75rem; }
-.pieces .tag { color: var(--muted); }
-@media (min-width: 56rem) {
-  .writing { grid-template-columns: repeat(12, 1fr); }
-  .feature-piece { grid-column: 1 / span 8; }
-  .pieces { grid-column: 9 / span 4; align-content: start; padding-top: 0.5rem; }
-}
-
-/* ---------- off the clock, contact ---------- */
-
-.big-line {
-  font-size: clamp(1.5rem, 3.3vw, 2.75rem);
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  max-width: 28ch;
-}
-.aside-line { margin-top: 1.25rem; color: var(--muted); max-width: 36rem; }
-.email {
-  display: inline-block;
-  font-family: var(--display);
-  font-size: clamp(1.6rem, 6vw, 4.75rem);
-  font-weight: 700; letter-spacing: -0.04em; line-height: 1.05;
-  text-decoration-thickness: 0.06em; text-underline-offset: 0.12em;
-  overflow-wrap: anywhere;
-}
-.contact-more { margin-top: 1.25rem; display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; }
-.contact-more a { display: inline-block; padding: 0.5rem 0; }
-
-/* ---------- footer ---------- */
-
-.foot {
-  margin-top: clamp(5rem, 11vw, 9rem);
-  padding: 1.25rem 0 3rem;
-  border-top: 2px solid var(--ink);
-  color: var(--muted); font-size: 0.9375rem;
-  display: grid; gap: 0.5rem;
-}
-@media (min-width: 48rem) { .foot { grid-template-columns: 1fr 1fr; } .foot p:last-child { text-align: right; } }
-
-/* ---------- a page of its own (a write-up) ---------- */
-
-/* The title of a page sits on the yellow, like the opening of the home page. */
-.piece-head {
-  padding-top: clamp(2rem, 7vw, 5rem); padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
-  background: var(--hl); color: var(--on-hl);
-  box-shadow: 0 0 0 100vmax var(--hl); clip-path: inset(0 -100vmax);
-}
-.piece-head a:hover { background: var(--on-hl); color: var(--hl); }
-.piece-head h1 {
-  font-family: var(--display);
-  font-size: clamp(2.75rem, 8.5vw, 7rem);
-  font-weight: 700; line-height: 0.92; letter-spacing: -0.045em;
-  max-width: 14ch; margin-left: -0.04em;
-  overflow-wrap: anywhere;
-}
-.piece-head .standfirst {
-  margin-top: clamp(1.25rem, 3vw, 2rem);
-  font-size: clamp(1.3rem, 2.3vw, 1.875rem); line-height: 1.25; letter-spacing: -0.015em;
-  max-width: 32ch;
-}
-.piece-head .meta { margin-top: 1.25rem; color: rgb(0 0 0 / 0.72); }
-
-.prose { margin-top: clamp(3rem, 7vw, 5.5rem); }
-.prose > * { max-width: var(--text); }
-.prose > * + * { margin-top: 1.1em; }
-.prose h2 {
-  font-family: var(--display);
-  font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 700; letter-spacing: -0.025em; line-height: 1.1;
-  margin-top: 2.6em; scroll-margin-top: 1.5rem;
-}
-.prose h2 + * { margin-top: 0.75em; }
-.prose ul, .prose ol { padding-left: 1.25em; }
-.prose li + li { margin-top: 0.5em; }
-.prose li::marker { color: var(--muted); }
-.prose strong { font-weight: 700; }
-.prose blockquote { margin-left: 0; padding-left: 1.1rem; border-left: 4px solid var(--hl); font-size: 1.15em; line-height: 1.35; }
-.prose figure { max-width: 100%; margin-top: 2.5rem; margin-bottom: 2.5rem; }
-.prose figure.wide { max-width: 100%; }
-.prose figure.mid { max-width: 54rem; }
-.prose figure.narrow { max-width: 24.375rem; }
-.prose .ph { aspect-ratio: 3 / 2; }
-.prose .ph.tall { aspect-ratio: 4 / 5; max-width: 30rem; }
-.prose .shot { background: var(--soft); padding: clamp(0.75rem, 2.5vw, 2rem); }
-.prose .facts { display: grid; gap: 0.5rem 1.5rem; padding: 1.25rem 0; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); max-width: 54rem; }
-.prose .facts dt { color: var(--muted); }
-.prose .facts dd { margin: 0; font-weight: 700; }
-@media (min-width: 40rem) { .prose .facts { grid-template-columns: repeat(3, 1fr); } .prose .facts div { display: grid; gap: 0.15rem; } }
-
-.next { margin-top: clamp(4rem, 9vw, 7rem); font-weight: 700; }
-
-/* Diagrams in a write-up (inline SVG) */
-.diagram text { fill: var(--ink); font-family: var(--font); }
-.diagram .lbl { font-weight: 700; }
-.diagram .box { fill: none; stroke: var(--ink); stroke-width: 1.5; }
-.diagram .key { fill: var(--hl); stroke: var(--ink); stroke-width: 1.5; }
-.diagram .key + text, .diagram .key ~ text.on-key { fill: var(--on-hl); }
-.diagram .flow { fill: none; stroke: var(--ink); stroke-width: 1.5; }
-.diagram .tip { fill: var(--ink); stroke: none; }
-.diagram .rule { stroke: var(--soft); stroke-width: 2; }
-.diagram-tall { display: none; }
-@media (max-width: 40rem) { .diagram-wide { display: none; } .diagram-tall { display: block; } }
-
-/* ---------- movement: pages cross-fade where the browser can ---------- */
+h1, h2, h3, p, ul, ol, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+img { max-width: 100%; }
 
 @view-transition { navigation: auto; }
 @media (prefers-reduced-motion: reduce) {
-  @view-transition { navigation: none; }
   html { scroll-behavior: auto; }
+  @view-transition { navigation: none; }
 }
-@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+.wrap {
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--side);
+}
+
+/* Links: ink and underlined; highlighter yellow when pointed at or focused. */
+a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: .15em;
+}
+a:hover, a:focus-visible {
+  background: var(--hl);
+  color: #161614;
+}
+:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.skip {
+  position: absolute;
+  left: -999rem;
+  top: 0;
+  padding: .75rem 1rem;
+  background: var(--paper);
+  font-family: var(--sans);
+}
+.skip:focus { left: 0; z-index: 10; }
+
+/* Every heading: Besley bold. */
+h2 {
+  font-weight: 700;
+  font-size: 1.75rem;
+  line-height: 1.2;
+  margin-bottom: .5rem;
+}
+h3 { font-weight: 600; font-size: 1.25rem; line-height: 1.25; }
+section { margin-top: var(--gap); }
+section > p { max-width: var(--prose); }
+#seasons > p { max-width: none; }
+#seasons { margin-top: 3rem; }
+
+/* ---------- top line ---------- */
+/* The home page has only the nav; the other pages put the name before it. */
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 1rem;
+}
+.top nav { flex: 1 1 auto; }
+.top .name {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 1.0625rem;
+  text-decoration: none;
+}
+.top .name:hover, .top .name:focus-visible { text-decoration: underline; }
+.top ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  column-gap: .25rem;
+  font-family: var(--sans);
+  font-size: .9375rem;
+}
+.top ul a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding-inline: .5rem;
+}
+.top .name { display: inline-flex; align-items: center; min-height: 2.75rem; }
+@media (max-width: 30rem) {
+  .top nav { flex-basis: 100%; }
+  .top ul { justify-content: flex-start; column-gap: 0; margin-inline: -.5rem; }
+  .top ul a { padding-inline: .4rem; }
+}
+
+/* ---------- masthead ---------- */
+
+.mast {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 1.5rem;
+  margin-top: .25rem;
+}
+.mast h1 {
+  grid-column: 1 / 9;
+  font-weight: 700;
+  font-size: clamp(2.25rem, 1.4rem + 3.2vw, 3.5rem);
+  line-height: 1.05;
+  overflow-wrap: anywhere;   /* only matters at extreme zoom */
+}
+.intro {
+  grid-column: 1 / 9;
+  max-width: 40rem;
+  margin-top: 1rem;
+  font-size: clamp(1.1875rem, 1rem + .9vw, 1.5rem);
+  line-height: 1.4;
+}
+.now { grid-column: 1 / 9; max-width: var(--prose); margin-top: 1rem; }
+.now b { font-weight: 700; }
+
+/* Portrait slot and the three contact lines, bottom-aligned with the text. */
+.mast-side {
+  grid-column: 9 / 13;
+  grid-row: 1 / 4;
+  align-self: start;
+  justify-self: end;
+  width: 11rem;
+  margin: .5rem 0 -2rem;   /* lines the portrait up with the top of the name's letters; it may hang into the gap below, so it does not push the chart down */
+  display: flex;
+  flex-direction: column;
+  gap: .875rem;
+  font-family: var(--sans);
+  font-size: .9375rem;
+  line-height: 1.5;
+}
+.mast-side .portrait { width: 11rem; }
+.mast-side p { display: block; }
+
+@media (max-width: 47.99rem) {
+  .mast { grid-template-columns: minmax(0, 1fr) 5.5rem; column-gap: 1rem; }
+  .mast h1 { grid-column: 1; grid-row: 1; align-self: end; }
+  .mast-side { display: contents; }
+  .mast-side .portrait {
+    grid-column: 2; grid-row: 1;
+    width: 5.5rem;
+    margin-top: 0;
+  }
+  .intro, .now { grid-column: 1 / -1; }
+  .mast-side .lines {
+    grid-column: 1 / -1;
+    margin-top: 1rem;
+    font-family: var(--sans);
+    font-size: .9375rem;
+    line-height: 1.5;
+  }
+}
+
+/* ---------- photo slot ---------- */
+
+.ph {
+  display: flex;
+  align-items: flex-end;
+  padding: .5rem;
+  background: var(--winter);
+  font-family: var(--sans);
+  font-size: .75rem;
+  line-height: 1.3;
+  color: var(--ink);
+  overflow: hidden;
+}
+.portrait { aspect-ratio: 4 / 5; }
+@media (max-width: 47.99rem) { .ph { padding: .375rem; } }
+.photo img { width: 100%; height: auto; display: block; }
+
+/* ---------- the chart ---------- */
+
+.key {
+  margin-top: 1rem;
+  font-family: var(--sans);
+  font-size: .875rem;
+  color: var(--muted);
+  max-width: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .25rem 1.25rem;
+}
+.key span { display: inline-flex; align-items: baseline; }
+.key i {
+  display: inline-block;
+  width: 1.5rem;
+  height: .75rem;
+  margin-right: .375rem;
+  flex: none;
+  background: var(--ink);
+}
+/* the second swatch is a small bracket, like a role in the chart */
+.key i.o { height: .5rem; background: none; border: 2px solid var(--ink); border-top: 0; }
+
+
+.chart {
+  position: relative;
+  margin-top: 1rem;
+  font-family: var(--sans);
+  background: var(--paper);
+}
+/* The four season fields, painted once behind everything: one gradient
+   across the twelve month columns (Jan-Feb, Mar-May, Jun-Aug, Sep-Nov, Dec). */
+.chart::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0; right: 0;
+  left: var(--yc);
+  background: linear-gradient(to right,
+    var(--winter) 0 16.667%,
+    var(--spring) 16.667% 41.667%,
+    var(--summer) 41.667% 66.667%,
+    var(--fall) 66.667% 91.667%,
+    var(--winter) 91.667% 100%);
+}
+.chart > * { position: relative; }
+
+/* Header: season names, then month names, on the same twelve columns. */
+.hd {
+  display: grid;
+  grid-template-columns: var(--yc) repeat(12, minmax(0, 1fr));
+  padding-top: .5rem;
+}
+.hd ol { display: contents; }
+.hd .seasons li {
+  font-weight: 600;
+  font-size: .875rem;
+  line-height: 1.5;
+  padding-left: .375rem;
+  white-space: nowrap;
+}
+.hd .months li {
+  font-size: 0;                  /* narrow screens: one letter, from data-m */
+  line-height: 1.5;
+  padding-left: .375rem;
+  padding-bottom: .125rem;
+}
+.hd .months li::before { content: attr(data-m); font-size: .75rem; }
+.s-w  { grid-column: 2 / 4; }
+.s-sp { grid-column: 4 / 7; }
+.s-su { grid-column: 7 / 10; }
+.s-f  { grid-column: 10 / 13; }
+.hd .months li:first-child { grid-column: 2; }
+@media (min-width: 60rem) {
+  .hd .months li { font-size: .75rem; }
+  .hd .months li::before { content: none; }
+}
+@media (max-width: 29.99rem) { .hd .seasons { display: none; } }
+@media (max-width: 15rem) {   /* only at extreme zoom */
+  .hd .months { display: none; }
+  .top ul { margin-inline: 0; }
+  .top ul a { padding-inline: .1rem; }
+  .mast { grid-template-columns: minmax(0, 1fr) 3rem; }
+  .mast-side .portrait { width: 3rem; }
+}
+@media (max-width: 59.99rem) { .hd .seasons li { font-size: .75rem; padding-left: .25rem; } .hd .months li { padding-left: .25rem; } }
+
+/* One year: numeral on the paper, then twelve month columns of bars. */
+.yr {
+  display: grid;
+  grid-template-columns: var(--yc) minmax(0, 1fr);
+  border-top: 3px solid var(--paper);
+}
+.y {
+  align-self: stretch;
+  padding-top: .375rem;
+  background: var(--paper);
+  font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+@media (min-width: 60rem) { .y { line-height: 1.65rem; } }
+.hd + .yr { border-top-width: 3px; }
+.yr ol {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-rows: .5rem;
+  grid-auto-flow: row dense;
+  row-gap: .1875rem;
+  padding-block: .375rem;
+}
+@media (min-width: 60rem) {
+  .yr ol { grid-auto-rows: 1.65rem; row-gap: .25rem; }
+}
+
+/* A bar. Classes f1..f12 = first month, t1..t12 = last month, r1..r12 = where
+   the room for a label ends (short bars and marks only). */
+.b {
+  position: relative;
+  grid-column: var(--f) / calc(var(--t) + 1);
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.job { background: var(--ink); color: var(--paper); margin-inline: 1px; }   /* 1px in at each end: neighbours never touch */
+/* A role is a bracket: a 2px line along the bottom with a tick at each end. */
+.role { color: var(--ink); align-items: flex-end; }
+.role:not(.short)::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: .4rem;
+  border: 2px solid var(--ink);
+  border-top: 0;
+}
+.role .lb { padding: 0 .375rem calc(.3rem + 2px); }
+.lb {
+  font-size: clamp(.71875rem, .5rem + .4vw, .8125rem);   /* a little smaller near 960px so labels fit */
+  font-stretch: 88%;
+  line-height: 1;
+  white-space: nowrap;
+  padding-inline: .5rem;
+}
+.lb b { font-weight: 600; }
+.lb span { font-weight: 400; margin-left: .25rem; }
+
+/* Short bar: too short for its label, so the label sits to the right, on the
+   field. The li spans the extra room; ::before draws the bar over f..t only. */
+.b.short, .b.mark { grid-column: var(--f) / calc(var(--r) + 1); background: none; border: 0; color: var(--ink); }
+.b.short::before, .b.mark::before {
+  content: "";
+  flex: none;
+  align-self: stretch;
+  background: var(--ink);
+}
+.short::before {
+  width: calc(100% * (var(--t) - var(--f) + 1) / (var(--r) - var(--f) + 1) - 2px);
+  margin-inline: 1px;
+}
+.short.role::before {
+  align-self: flex-end;
+  height: .4rem;
+  margin: 0;
+  width: calc(100% * (var(--t) - var(--f) + 1) / (var(--r) - var(--f) + 1));
+  background: none;
+  border: 2px solid var(--ink);
+  border-top: 0;
+}
+.short .lb, .mark .lb { padding-inline: .5rem 0; }
+.short.role .lb { padding: 0 0 calc(.3rem + 2px) .5rem; }
+/* if a label is wider than its room (very large text), it wraps instead of sticking out */
+.short .lb, .mark .lb { white-space: normal; min-width: 0; }
+/* Mark: a single event, a dot at the start of the month and a label after it. */
+.b.mark::before {
+  width: .5rem;
+  height: .5rem;
+  align-self: center;
+  border-radius: 50%;
+}
+
+/* Month and bar positions. */
+.f1{--f:1}.f2{--f:2}.f3{--f:3}.f4{--f:4}.f5{--f:5}.f6{--f:6}
+.f7{--f:7}.f8{--f:8}.f9{--f:9}.f10{--f:10}.f11{--f:11}.f12{--f:12}
+.t1{--t:1}.t2{--t:2}.t3{--t:3}.t4{--t:4}.t5{--t:5}.t6{--t:6}
+.t7{--t:7}.t8{--t:8}.t9{--t:9}.t10{--t:10}.t11{--t:11}.t12{--t:12}
+.r1{--r:1}.r2{--r:2}.r3{--r:3}.r4{--r:4}.r5{--r:5}.r6{--r:6}
+.r7{--r:7}.r8{--r:8}.r9{--r:9}.r10{--r:10}.r11{--r:11}.r12{--r:12}
+
+/* Narrow screens: the chart becomes a small picture; the record gives the words. */
+@media (max-width: 59.99rem) {
+  .lb {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    padding: 0;
+  }
+  .b.short { grid-column: var(--f) / calc(var(--t) + 1); }
+  .b.short::before { width: calc(100% - 2px); }
+  .b.short.role::before { width: 100%; }
+  .b.mark { grid-column: var(--f) / calc(var(--f) + 1); justify-content: center; }   /* dot centred in its month */
+  .role:not(.short)::after { border-width: 1.5px; }
+}
+@media (min-width: 60rem) {
+  .b:not(.short):not(.mark) { overflow: hidden; }
+}
+
+/* ---------- strip: one year row, small on the home page, large (.big) on the pages of their own ---------- */
+
+.strip { display: grid; row-gap: .1875rem; }
+.sr { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); align-items: center; }
+.sr > span { font-family: var(--sans); font-size: .75rem; line-height: 1; color: var(--muted); }
+.sr > div {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  height: .75rem;
+  background: linear-gradient(to right,
+    var(--winter) 0 16.667%,
+    var(--spring) 16.667% 41.667%,
+    var(--summer) 41.667% 66.667%,
+    var(--fall) 66.667% 91.667%,
+    var(--winter) 91.667% 100%);
+}
+.sb { grid-column: var(--f) / calc(var(--t) + 1); grid-row: 1; background: var(--ink); }
+.sb.mark {
+  grid-column: var(--f);
+  background: var(--ink);
+  width: .5rem; height: .5rem;
+  align-self: center;
+  border-radius: 50%;
+}
+
+/* the large strip: month names above, then one 1.5rem track per year */
+.strip.big { margin-block: 2rem 2.5rem; row-gap: .25rem; }
+.strip.big .mo {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  margin-left: 3rem;
+  font-family: var(--sans);
+  line-height: 1.5;
+}
+.strip.big .mo span { font-size: .75rem; }
+@media (max-width: 47.99rem) {   /* one letter per month, from data-m */
+  .strip.big .mo span { font-size: 0; }
+  .strip.big .mo span::before { content: attr(data-m); font-size: .75rem; }
+}
+.strip.big .sr { grid-template-columns: 3rem minmax(0, 1fr); }
+.strip.big .sr + .sr { margin-top: .1875rem; }
+.strip.big .sr > span { font-size: .875rem; color: var(--ink); }
+.strip.big .sr > div { height: 1.5rem; }
+.strip.big .sb.mark { width: 1rem; height: 1rem; }
+
+/* ---------- the longer versions ---------- */
+
+.longer {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2rem 1.75rem;
+  margin-top: 1.5rem;
+}
+.longer article { display: flex; flex-direction: column; gap: .75rem; }
+.longer h3 { font-size: 1.25rem; font-weight: 600; }
+.longer p { font-size: 1rem; line-height: 1.5; }
+@media (max-width: 59.99rem) { .longer { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 33.99rem) { .longer { grid-template-columns: 1fr; } }
+
+/* ---------- the record ---------- */
+
+.rec { margin-top: 1.5rem; display: grid; row-gap: 1.75rem; }
+.rec .yrow { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); }
+.rec h3 { font-weight: 700; font-size: 1.25rem; line-height: 1.5; }
+.rec .entry {
+  display: grid;
+  grid-template-columns: 9.5rem minmax(0, 1fr) 11rem;
+  column-gap: 1.25rem;
+  padding-block: .1875rem;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.when, .where { font-family: var(--sans); font-size: .875rem; color: var(--muted); }
+.what strong { font-weight: 700; }
+.where { text-align: right; }
+.rec .entry > * { overflow-wrap: anywhere; }
+@media (max-width: 47.99rem) {
+  .rec .yrow { grid-template-columns: minmax(0, 1fr); }
+  .rec .entry {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: "what what" "when where";
+    padding-block: .375rem;
+    column-gap: .5rem;
+  }
+  .what { grid-area: what; }
+  .when { grid-area: when; }
+  .where { grid-area: where; text-align: left; }
+  .where { margin-left: 1em; }
+}
+
+.small { margin-top: 2.5rem; }
+.small h3 { font-weight: 600; margin-bottom: .5rem; }
+.small ul { max-width: var(--prose); display: grid; gap: .5rem; }
+.small p { margin-top: 1.25rem; max-width: var(--prose); }
+
+/* ---------- contact and footer ---------- */
+
+.email {
+  display: inline-block;
+  margin-top: .5rem;
+  font-weight: 600;
+  font-size: clamp(1.375rem, 1rem + 2vw, 2rem);
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+.contact-more { margin-top: .75rem; }
+
+.foot {
+  margin-top: var(--gap);
+  padding-block: 1rem 2.5rem;
+  border-top: 1.5px solid var(--line);
+  font-family: var(--sans);
+  font-size: .8125rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* ---------- pages of their own: header ---------- */
+
+.pagehead { margin-top: clamp(1.5rem, 4vw, 3rem); }
+.pagehead h1 {
+  max-width: 20ch;
+  font-weight: 700;
+  font-size: clamp(2rem, 1.3rem + 3vw, 3.25rem);
+  line-height: 1.08;
+}
+.pagehead .lede {
+  max-width: 34rem;
+  margin-top: 1.25rem;
+  font-size: clamp(1.125rem, 1rem + .7vw, 1.375rem);
+  line-height: 1.4;
+}
+.pagehead .meta {
+  max-width: var(--prose);
+  margin-top: 1rem;
+  font-family: var(--sans);
+  font-size: .9375rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* ---------- pages of their own: reading column and margin ----------
+   --col is the width of the reading column. From 62rem up, margin items (.side)
+   float right and fill the space from 3.5rem past the column to the right edge. */
+
+.body { --col: min(var(--prose), 100%); display: flow-root; }
+@media (min-width: 62rem) { .body { --col: min(var(--prose), 58%); } }
+.body > * { max-width: var(--col); }
+.body h2 {
+  margin-top: 2.5rem;
+  margin-bottom: .5rem;
+  font-size: 1.375rem;
+  line-height: 1.25;
+}
+.body p, .body ul, .body ol { margin: 0 0 1rem; font-size: 1.0625rem; line-height: 1.6; }
+.body ul { list-style: disc; padding-left: 1.25rem; }
+.body ol { list-style: decimal; padding-left: 1.5rem; }
+.body li { margin-bottom: .5rem; padding-left: .25rem; }
+.body blockquote {
+  margin: 1.5rem 0 1.5rem 1.5rem;
+  font-style: italic;
+  font-size: 1.25rem;
+  line-height: 1.45;
+}
+.body blockquote p { margin: 0; font-size: inherit; line-height: inherit; }
+
+.side { margin: 1.5rem 0; }
+.facts:first-child { margin-top: 0; }
+.facts dl { margin: 0; }
+.facts div { margin-bottom: .75rem; }
+.facts dt { font-family: var(--sans); font-size: .8125rem; line-height: 1.4; color: var(--muted); }
+.facts dd { margin: 0; font-size: 1rem; line-height: 1.35; }
+.facts + h2 { margin-top: 0; }
+.ph.side { min-height: 6rem; }
+@media (min-width: 62rem) {
+  .side {
+    float: right;
+    clear: right;
+    width: calc(100% - var(--col) - 3.5rem);
+    max-width: none;
+    margin: .3rem 0 1rem;
+  }
+}
+
+/* figures */
+figcaption {
+  max-width: var(--prose);
+  margin-top: .5rem;
+  font-family: var(--sans);
+  font-size: .8125rem;
+  line-height: 1.4;
+  color: var(--muted);
+}
+.body > figure.wide { max-width: none; clear: both; margin: 2rem 0; }   /* the whole width: column and margin */
+.body > figure.narrow { max-width: 20rem; margin: 2rem 0; }
+.shot picture { display: block; }
+.shot img {
+  display: block;
+  width: 100%;
+  max-width: 56.25rem;
+  height: auto;
+  outline: 1px solid var(--muted);
+}
+figure.narrow .shot img { max-width: 20rem; }
+@media (max-width: 760px) { .shot img { max-width: 24.375rem; } figure.narrow .shot img { max-width: 20rem; } }
+
+/* the diagram: boxes outlined in ink, the one highlighted box in the highlighter yellow */
+.diagram { display: block; width: 100%; height: auto; }
+.diagram text { fill: var(--ink); font-family: var(--sans); }
+.diagram .lbl { font-weight: 700; }
+.diagram .box { fill: none; stroke: var(--ink); stroke-width: 1.5; }
+.diagram .key { fill: var(--hl); stroke: var(--ink); stroke-width: 1.5; }
+.diagram .key + text, .diagram text.on-key { fill: #161614; }
+.diagram .flow { fill: none; stroke: var(--ink); stroke-width: 1.5; }
+.diagram .tip { fill: var(--ink); stroke: none; }
+.diagram .rule { stroke: var(--muted); stroke-width: 2; }
+.diagram-wide { max-width: 46rem; height: auto; margin-right: auto; }
+.diagram-tall { display: none; max-width: 26rem; }
+@media (max-width: 47.99rem) { .diagram-wide { display: none; } .diagram-tall { display: block; } }
+
+/* ---------- pages of their own: end of page ---------- */
+
+.next { clear: both; max-width: var(--prose); margin-top: 3rem; }
+.next p { display: flex; align-items: center; gap: .3em; min-height: 2.75rem; }
+.next a { display: inline-flex; align-items: center; min-height: 2.75rem; }

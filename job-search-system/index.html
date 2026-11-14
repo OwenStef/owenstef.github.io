@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -6,7 +6,8 @@
 <title>Job search system · Owen Stefanakos</title>
 <meta name="description" content="A job search system I designed and directed Claude Code to build: what it does, how it runs, and what broke.">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#ffd31a">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#131312" media="(prefers-color-scheme: dark)">
 <!-- The social card needs full addresses; nothing on the page itself loads from them. -->
 <link rel="canonical" href="https://owenstef.github.io/job-search-system/">
 <meta property="og:type" content="website">
@@ -20,23 +21,38 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="../img/favicon.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
-<link rel="preload" href="../fonts/familjen-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="../fonts/schibsted-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/besley-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to the page</a>
-<header class="band"><div class="wrap bar"><a class="home" href="../">Owen Stefanakos</a><nav aria-label="Sections"><ul><li><a href="../#made">Things I’ve made</a></li><li><a href="../#seasons">Seasons</a></li><li><a href="../#writing">Writing</a></li><li><a href="../#contact">Contact</a></li></ul></nav></div></header>
 
-<main id="main">
-<div class="wrap">
+<header class="wrap top">
+<a class="name" href="../">Owen Stefanakos</a>
+<nav aria-label="Sections">
+<ul>
+<li><a href="../#seasons">Seasons</a></li>
+<li><a href="../#longer">Longer versions</a></li>
+<li><a href="../#record">The record</a></li>
+<li><a href="../#contact">Contact</a></li>
+</ul>
+</nav>
+</header>
+
+<main id="main" class="wrap">
 <article>
-<header class="piece-head">
+<header class="pagehead">
 <h1>Job search system</h1>
-<p class="standfirst">A job search system I designed and directed Claude Code to build.</p>
+<p class="lede">A job search system I designed and directed Claude Code to build.</p>
 <p class="meta">2026</p>
 </header>
-<div class="prose">
+<div class="strip big" aria-hidden="true">
+<div class="mo"><span data-m="J">Jan</span><span data-m="F">Feb</span><span data-m="M">Mar</span><span data-m="A">Apr</span><span data-m="M">May</span><span data-m="J">Jun</span><span data-m="J">Jul</span><span data-m="A">Aug</span><span data-m="S">Sep</span><span data-m="O">Oct</span><span data-m="N">Nov</span><span data-m="D">Dec</span></div>
+<div class="sr"><span>2026</span><div><i class="sb f10 t10"></i></div></div>
+</div>
+
+<div class="body">
 <h2 id="the-problem">The problem</h2>
 <p>A job search is really three searches at once: a company doing something I care about, a role there I actually fit, and someone I know who works there. Each one alone is easy. The overlap is what gets you an interview, and it’s the part I kept losing track of. I wanted it surfaced every morning without me hunting for it.</p>
 
@@ -51,7 +67,7 @@
 </ul>
 <p>In all: 48 scripts, 9 scheduled workflows, 8 AI helper roles and 10 saved routines.</p>
 
-<figure class="mid">
+<figure class="wide">
 <svg class="diagram diagram-wide" viewBox="29 0 702 250" role="img" aria-label="Scripts do the plumbing and one cheap model step does the scoring. Sources feed scripts, then triage, then the activity log, then the Desk; every tap on the Desk adds a row to the log.">
 <text class="lbl" x="30" y="22" font-size="19">Scripts do the plumbing; one cheap model step does the scoring</text>
 <text x="30" y="44" font-size="14.5">Highlighted: the step where a cheap model reads and scores</text>
@@ -104,7 +120,7 @@
 <figcaption>Postings flow left to right; everything I do on the Desk is written back to the log, which is what the Desk reads.</figcaption>
 </figure>
 
-<figure class="mid">
+<figure class="wide">
 <div class="shot">
 <picture>
 <source media="(max-width: 760px) and (prefers-color-scheme: dark)" srcset="../img/home-phone-dark.webp 1x, ../img/home-phone-dark@2x.webp 2x" width="390" height="831">
@@ -116,7 +132,7 @@
 <figcaption>The Desk’s home page. The data in these screenshots is made up.</figcaption>
 </figure>
 
-<figure class="mid">
+<figure class="wide">
 <div class="shot">
 <picture>
 <source media="(max-width: 760px) and (prefers-color-scheme: dark)" srcset="../img/fits-phone-dark.webp 1x, ../img/fits-phone-dark@2x.webp 2x" width="390" height="597">
@@ -128,7 +144,7 @@
 <figcaption>Best fits, with who could refer me.</figcaption>
 </figure>
 
-<figure class="mid">
+<figure class="wide">
 <div class="shot">
 <picture>
 <source media="(max-width: 760px) and (prefers-color-scheme: dark)" srcset="../img/company-phone-dark.webp 1x, ../img/company-phone-dark@2x.webp 2x" width="390" height="983">
@@ -163,15 +179,18 @@
 </ol>
 </div>
 </article>
-<p class="next"><a href="../">Back to the home page</a></p>
-</div>
+
+<nav class="next" aria-label="Next page">
+<p>Next: <a href="../fire-season/">A fire season</a></p>
+<p><a href="../">Home</a></p>
+</nav>
 </main>
 
-<div class="wrap">
-<footer class="foot">
+<footer class="wrap">
+<div class="foot">
 <p>Owen Stefanakos, San Francisco.</p>
-<p>Set in Familjen Grotesk and Schibsted Grotesk. Plain HTML and CSS; no tracking. Updated November 2026.</p>
-</footer>
+<p>Set in Besley and Archivo. Plain HTML and CSS; no tracking. Updated November 2026.</p>
 </div>
+</footer>
 </body>
 </html>
