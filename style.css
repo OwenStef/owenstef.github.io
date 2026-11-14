@@ -1,264 +1,337 @@
-/* Owen Stefanakos. Plain HTML and CSS: no build step, no scripts.
-   How to add or edit a piece is in README.md. Colours and sizes are the tokens just below. */
+/* Owen Stefanakos — one stylesheet for every page.
+   To change the look, edit the list just below: colours, the typeface, widths.
+   Everything else follows from it. */
 
+/* Two typefaces, both SIL Open Font License (fonts/LICENSE-*.txt):
+   Familjen Grotesk for the name and headings, Schibsted Grotesk for reading. */
 @font-face {
-  font-family: "ETbb";
-  src: url("fonts/etbb-regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
+  font-family: "Familjen Grotesk";
+  src: url("fonts/familjen-grotesk-latin-wght-normal.woff2") format("woff2");
+  font-weight: 400 700;
   font-display: swap;
 }
 @font-face {
-  font-family: "ETbb";
-  src: url("fonts/etbb-italic.woff2") format("woff2");
-  font-weight: 400;
-  font-style: italic;
+  font-family: "Schibsted Grotesk";
+  src: url("fonts/schibsted-grotesk-latin-wght-normal.woff2") format("woff2");
+  font-weight: 400 900;
   font-display: swap;
 }
 
 :root {
-  --paper: #fdfcf6;
-  --ink: #1b1a17;
-  --muted: #696458;
-  --hair: rgba(27, 26, 23, .17);
-  --accent: #8f2d1a;
-  --wash: rgba(143, 45, 26, .06);
-  --label: 9.5rem;   /* the column the section labels hang in */
-  --gap: 2rem;
-  --measure: 34rem;  /* the text column */
+  --bg: #ffffff;        /* page */
+  --ink: #141414;       /* text */
+  --muted: #5e5e5b;     /* dates, places, captions */
+  --soft: #eeede9;      /* photo placeholders, the odd rule */
+  --hl: #ffd31a;        /* the one colour: fire-shirt yellow, used like a highlighter */
+  --on-hl: #141414;     /* text on the yellow */
+  --font: "Schibsted Grotesk", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --display: "Familjen Grotesk", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --max: 80rem;         /* widest the page gets */
+  --text: 40rem;        /* longest a line of reading text gets */
+  --gutter: clamp(1rem, 4.5vw, 3.5rem);
   color-scheme: light dark;
 }
+
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #171614;
-    --ink: #e4e0d6;
-    --muted: #a39d90;
-    --hair: rgba(228, 224, 214, .2);
-    --accent: #e39a84;
-    --wash: rgba(227, 154, 132, .09);
+    --bg: #121211;
+    --ink: #edece7;
+    --muted: #a4a39d;
+    --soft: #242422;
   }
 }
 
+/* ---------- base ---------- */
+
 *, *::before, *::after { box-sizing: border-box; }
-
-html {
-  font-size: 100%;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-  scroll-padding-top: 2rem;
-}
-
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body {
   margin: 0;
-  background: var(--paper);
+  background: var(--bg);
   color: var(--ink);
-  font-family: "ETbb", Palatino, "Palatino Linotype", "Iowan Old Style", "Book Antiqua", Georgia, serif;
-  font-size: 1.25rem;
+  font-family: var(--font);
+  font-size: 1.0625rem;
   line-height: 1.5;
-  font-weight: 400;
-  font-synthesis: none;
   font-kerning: normal;
-  font-variant-ligatures: common-ligatures;
-  font-variant-numeric: oldstyle-nums proportional-nums;
-  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
+@media (min-width: 60rem) { body { font-size: 1.125rem; } }
 
-.page {
-  max-width: calc(var(--label) + var(--gap) + var(--measure) + 2 * var(--side));
-  --side: clamp(1.25rem, 5vw, 3rem);
-  margin: 0 auto;
-  padding: clamp(2.5rem, 10vh, 6.5rem) var(--side) 5rem;
-}
-
-/* Every block is two columns: a label on the left, the text on the right. */
-header, section, footer, .top {
-  display: grid;
-  grid-template-columns: var(--label) minmax(0, var(--measure));
-  column-gap: var(--gap);
-  align-items: baseline;
-}
-header > *, section > *, footer > *, .top > * { grid-column: 2; min-width: 0; }
-section { margin-top: 3rem; }
-
-/* Section labels: small capitals in the left column. */
-section > h2 {
-  grid-column: 1;
-  grid-row: 1;
-  margin: 0;
-  font-size: 1rem;
-  line-height: 1.4;
-  font-weight: 400;
-  font-variant-caps: all-small-caps;
-  font-variant-numeric: lining-nums;
-  letter-spacing: .09em;
-  color: var(--accent);
-  text-align: right;
-  text-wrap: balance;
-}
-
-h1 {
-  margin: 0 0 1.1rem;
-  font-size: 3rem;
-  line-height: 1.05;
-  font-weight: 400;
-  text-wrap: balance;
-  overflow-wrap: break-word;
-}
-
-p, ul, ol { margin: 0 0 1rem; overflow-wrap: break-word; }
-p, li { text-wrap: pretty; }
-section > :last-child, header > :last-child { margin-bottom: 0; }
-ul, ol { padding-left: 1.3rem; }
-li { margin: .45rem 0; padding-left: .2rem; }
-li::marker { color: var(--muted); }
-ul.plain { list-style: none; padding: 0; }
-ul.plain li { margin: .3rem 0; padding: 0; }
-
-/* The one large statement on the home page. */
-.lede { font-size: 1.6rem; line-height: 1.32; }
-
-/* Run-in heads at the start of list items: italic, never bold. */
-strong { font-weight: 400; font-style: italic; }
-
-.quiet { color: var(--muted); }
-.small { font-size: 1rem; line-height: 1.45; }
+h1, h2, h3, p, ul, ol, figure, dl, dd { margin: 0; }
+ul, ol { padding: 0; }
+img, svg { display: block; max-width: 100%; height: auto; }
 
 a {
   color: inherit;
+  text-decoration-line: underline;
+  text-decoration-thickness: 0.075em;
+  text-underline-offset: 0.18em;
+}
+a:hover { background: var(--hl); color: var(--on-hl); text-decoration-color: transparent; }
+a:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; text-decoration: none; }
+
+mark, .hl {
+  background: var(--hl);
+  color: var(--on-hl);
+  padding: 0.02em 0.28em;
+  margin: 0 -0.08em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.skip { position: absolute; left: -999rem; }
+.skip:focus { left: var(--gutter); top: 0.75rem; background: var(--hl); color: var(--on-hl); padding: 0.5rem 0.75rem; z-index: 2; }
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+
+/* Filler Owen has not replaced yet carries class="fill". Uncomment to see it all:
+.fill { outline: 2px dashed #e5484d; outline-offset: 2px; } */
+
+/* ---------- top bar ---------- */
+
+.bar {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
+  gap: 0.25rem 1.5rem;
+  padding-top: 1.25rem;
+  font-size: 1rem;
+}
+.bar .home { font-weight: 700; text-decoration: none; display: inline-block; padding: 0.6rem 0; }
+.bar:has(> .home) { padding-bottom: 0.5rem; }
+.bar nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
+.bar nav a { text-decoration: none; display: inline-block; padding: 0.6rem 0; }
+.bar nav a:hover { padding-inline: 0.25rem; margin-inline: -0.25rem; }
+.bar nav a[aria-current="page"] { text-decoration: underline; }
+
+/* ---------- home: the opening, a band of the yellow ---------- */
+
+.band { background: var(--hl); color: var(--on-hl); }
+header.band { margin-bottom: -1px; padding-bottom: 1px; }
+.band .opening { padding-bottom: clamp(3rem, 7vw, 6rem); }
+.band a:hover { background: var(--on-hl); color: var(--hl); }
+.band a:focus-visible { outline-color: var(--on-hl); }
+.band .ph { background: rgb(0 0 0 / 0.085); color: rgb(0 0 0 / 0.7); }
+.opening { padding-top: clamp(2rem, 7vw, 5rem); }
+.name {
+  font-family: var(--display);
+  font-size: clamp(3.6rem, 13.5vw, 11.5rem);
+  font-weight: 700;
+  line-height: 0.84;
+  letter-spacing: -0.05em;
+  margin-left: -0.055em;
   overflow-wrap: anywhere;
-  text-decoration: underline;
-  text-decoration-color: var(--muted);
-  text-decoration-thickness: .045em;
-  text-underline-offset: .16em;
 }
-a:hover { color: var(--accent); text-decoration-color: currentColor; }
-a:focus-visible, summary:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 1px;
+.opening-grid {
+  display: grid; gap: 2rem;
+  margin-top: clamp(1.75rem, 4vw, 3rem);
+}
+.intro {
+  font-size: clamp(1.375rem, 2.55vw, 2.125rem);
+  line-height: 1.22;
+  letter-spacing: -0.015em;
+  max-width: 30ch;
+}
+.now { margin-top: 1.5rem; max-width: 36rem; }
+.now b { font-weight: 700; background: var(--on-hl); color: var(--hl); padding: 0.05em 0.35em; margin-right: 0.35em; }
+.opening .ph { aspect-ratio: 4 / 5; }
+@media (min-width: 56rem) {
+  .opening-grid { grid-template-columns: repeat(12, 1fr); gap: 1.5rem; align-items: start; }
+  .opening-grid > .words { grid-column: 1 / span 7; }
+  .opening-grid > figure { grid-column: 9 / span 4; margin-top: 0.5rem; }
 }
 
-/* Pieces: one row each. A row opens in place; a long piece also links to its own page. */
-.pieces { border-bottom: 1px solid var(--hair); }
-.piece { border-top: 1px solid var(--hair); }
-.piece summary {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto 1.1rem;
-  column-gap: .9rem;
-  align-items: baseline;
-  padding: .85rem 0 .95rem;
-  cursor: pointer;
-  list-style: none;
-}
-.piece summary::-webkit-details-marker { display: none; }
-.piece .title { font-size: 1.45rem; line-height: 1.25; }
-.piece .when { color: var(--muted); font-size: 1rem; white-space: nowrap; }
-.piece .gist { grid-column: 1 / 3; grid-row: 2; color: var(--muted); font-size: 1.1rem; margin-top: .15rem; text-wrap: pretty; }
-.piece summary::after {
-  content: "+";
-  grid-column: 3;
-  grid-row: 1;
-  justify-self: end;
-  color: var(--accent);
-  font-size: 1.35rem;
+/* ---------- sections ---------- */
+
+.block { margin-top: clamp(5rem, 11vw, 9rem); scroll-margin-top: 1.5rem; }
+.block > h2, .block-head h2 {
+  font-family: var(--display);
+  font-size: clamp(2.25rem, 5.4vw, 4.5rem);
+  font-weight: 700;
   line-height: 1;
-  transition: transform .25s ease;
+  letter-spacing: -0.035em;
 }
-.piece[open] summary::after { transform: rotate(45deg); }
-.piece summary:hover .title { color: var(--accent); }
-.piece .more { padding: .1rem 2rem 1.3rem 0; }
-.piece .more > :last-child { margin-bottom: 0; }
+.block-head { display: grid; gap: 0.75rem; margin-bottom: clamp(1.75rem, 4vw, 3rem); }
+.block-head p { color: var(--muted); max-width: 34rem; }
+.block > h2 { margin-bottom: clamp(1.75rem, 4vw, 3rem); }
 
-/* A link that leads to a full page. */
-.go, footer .back { display: inline-block; padding: .75rem 0; margin: -.75rem 0; }
-.go::after { content: "\00a0\2192"; font-style: normal; }
-.back::before { content: "\2190\00a0"; }
+h3 { font-family: var(--display); font-size: 1.5rem; font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; }
+.years { color: var(--muted); font-weight: 400; }
 
-/* On an inner page: the way home, where the name sits on the home page. */
-.top { margin-bottom: 2.6rem; }
-.top a {
-  justify-self: start;
-  font-size: 1rem;
-  font-variant-caps: all-small-caps;
-  letter-spacing: .09em;
-  text-decoration: none;
+/* ---------- things I've made ---------- */
+
+.lead-work { display: grid; gap: 1.25rem 1.5rem; }
+.lead-work h3 { font-size: clamp(1.75rem, 3.2vw, 2.5rem); }
+.lead-work .words p { margin-top: 0.75rem; max-width: 30rem; }
+.lead-work .shot { background: var(--soft); padding: clamp(0.75rem, 2.5vw, 2rem) clamp(0.75rem, 2.5vw, 2rem) 0; overflow: hidden; }
+.lead-work .shot img { box-shadow: 0 0 0 1px rgb(0 0 0 / 0.06); }
+@media (min-width: 56rem) {
+  .lead-work { grid-template-columns: repeat(12, 1fr); align-items: end; }
+  .lead-work > figure { grid-column: 1 / span 8; }
+  .lead-work > .words { grid-column: 9 / span 4; padding-bottom: 0.25rem; }
+}
+
+.works { display: grid; gap: 3rem 1.5rem; margin-top: clamp(3.5rem, 7vw, 5.5rem); }
+.works .ph { aspect-ratio: 3 / 2; }
+.works h3 { margin-top: 1rem; }
+.works p { margin-top: 0.5rem; max-width: 32rem; }
+@media (min-width: 46rem) { .works { grid-template-columns: 1fr 1fr; } .works > :nth-child(2) { margin-top: clamp(3rem, 8vw, 7rem); } }
+
+.smaller { margin-top: clamp(3.5rem, 7vw, 5rem); display: grid; gap: 0.5rem; }
+.smaller h3 { font-size: 1.125rem; font-weight: 700; letter-spacing: 0; }
+.smaller ul { list-style: none; display: grid; gap: 0.6rem; max-width: 42rem; }
+.smaller li strong { font-weight: 700; }
+
+.more-link { display: inline-block; margin-top: 1rem; font-weight: 700; }
+
+/* ---------- photo placeholders: a <figure class="ph"> until there is a picture ---------- */
+
+.ph {
+  background: var(--soft);
+  display: flex; align-items: flex-end;
+  padding: 0.85rem 1rem;
   color: var(--muted);
-  padding: .9rem 0;
-  margin: -.9rem 0;
+  font-size: 0.875rem; line-height: 1.35;
 }
-.top a:hover { color: var(--accent); }
+figure.photo img { width: 100%; }
+figcaption { color: var(--muted); font-size: 0.9375rem; margin-top: 0.6rem; max-width: var(--text); }
+.ph figcaption, .ph > span { margin: 0; }
 
-/* Figures span both columns; their captions sit on the text column. */
-section > figure { grid-column: 1 / -1; margin: 1.6rem 0 2.2rem; }
-figure picture { display: block; }
-figure img, figure svg { display: block; width: 100%; height: auto; }
-figure img { border: 1px solid var(--hair); }
-figcaption {
-  margin-top: .65rem;
-  padding-left: calc(var(--label) + var(--gap));
-  color: var(--muted);
-  font-size: 1rem;
-  line-height: 1.45;
+/* ---------- seasons: everything, newest first ---------- */
+
+.seasons { display: grid; }
+.year { display: grid; gap: 0.25rem 1.5rem; padding: 1.5rem 0 1.75rem; border-top: 2px solid var(--ink); }
+.year:last-child { border-bottom: 2px solid var(--ink); }
+.year > h3 { font-size: clamp(1.75rem, 3.4vw, 2.75rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+.year ol { list-style: none; display: grid; gap: 0.9rem; }
+.entry { display: grid; gap: 0 1.5rem; }
+.entry .when, .entry .where { color: var(--muted); }
+.entry .what { max-width: 36rem; }
+.entry .what strong { font-weight: 700; }
+@media (max-width: 47.99rem) {
+  .entry .when { order: 2; font-size: 0.9375rem; }
+  .entry .where { order: 3; font-size: 0.9375rem; }
+  .entry .when::after { content: ""; }
 }
-section > figure.narrow { grid-column: 2; max-width: 17rem; }
-figure.narrow figcaption { padding-left: 0; }
+@media (min-width: 48rem) {
+  .year { grid-template-columns: repeat(12, 1fr); }
+  .year > h3 { grid-column: 1 / span 2; }
+  .year ol { grid-column: 3 / span 10; }
+  .entry { grid-template-columns: 11rem 1fr 13rem; }
+  .entry .where { text-align: right; }
+}
 
-/* Diagram: drawn in the page's own ink, so it follows the colour scheme. */
-.diagram text { fill: var(--ink); font-family: inherit; }
-.diagram .name { font-style: italic; }
-.diagram .box { fill: none; stroke: var(--ink); stroke-width: 1; }
-.diagram .key { fill: var(--wash); stroke: var(--accent); stroke-width: 2; }
-.diagram .flow { fill: none; stroke: var(--ink); stroke-width: 1; }
+/* ---------- writing ---------- */
+
+.writing { display: grid; gap: 2.5rem; }
+.feature-piece h3 { font-size: clamp(1.75rem, 3.4vw, 2.75rem); font-weight: 700; letter-spacing: -0.03em; max-width: 22ch; line-height: 1.05; }
+.feature-piece .source { color: var(--muted); margin-top: 0.75rem; max-width: 40rem; }
+.feature-piece p.abstract { margin-top: 1rem; max-width: var(--text); }
+.pieces { list-style: none; display: grid; gap: 0.75rem; }
+.pieces .tag { color: var(--muted); }
+@media (min-width: 56rem) {
+  .writing { grid-template-columns: repeat(12, 1fr); }
+  .feature-piece { grid-column: 1 / span 8; }
+  .pieces { grid-column: 9 / span 4; align-content: start; padding-top: 0.5rem; }
+}
+
+/* ---------- off the clock, contact ---------- */
+
+.big-line {
+  font-size: clamp(1.5rem, 3.3vw, 2.75rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  max-width: 28ch;
+}
+.aside-line { margin-top: 1.25rem; color: var(--muted); max-width: 36rem; }
+.email {
+  display: inline-block;
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 6vw, 4.75rem);
+  font-weight: 700; letter-spacing: -0.04em; line-height: 1.05;
+  text-decoration-thickness: 0.06em; text-underline-offset: 0.12em;
+  overflow-wrap: anywhere;
+}
+.contact-more { margin-top: 1.25rem; display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; }
+.contact-more a { display: inline-block; padding: 0.5rem 0; }
+
+/* ---------- footer ---------- */
+
+.foot {
+  margin-top: clamp(5rem, 11vw, 9rem);
+  padding: 1.25rem 0 3rem;
+  border-top: 2px solid var(--ink);
+  color: var(--muted); font-size: 0.9375rem;
+  display: grid; gap: 0.5rem;
+}
+@media (min-width: 48rem) { .foot { grid-template-columns: 1fr 1fr; } .foot p:last-child { text-align: right; } }
+
+/* ---------- a page of its own (a write-up) ---------- */
+
+/* The title of a page sits on the yellow, like the opening of the home page. */
+.piece-head {
+  padding-top: clamp(2rem, 7vw, 5rem); padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  background: var(--hl); color: var(--on-hl);
+  box-shadow: 0 0 0 100vmax var(--hl); clip-path: inset(0 -100vmax);
+}
+.piece-head a:hover { background: var(--on-hl); color: var(--hl); }
+.piece-head h1 {
+  font-family: var(--display);
+  font-size: clamp(2.75rem, 8.5vw, 7rem);
+  font-weight: 700; line-height: 0.92; letter-spacing: -0.045em;
+  max-width: 14ch; margin-left: -0.04em;
+  overflow-wrap: anywhere;
+}
+.piece-head .standfirst {
+  margin-top: clamp(1.25rem, 3vw, 2rem);
+  font-size: clamp(1.3rem, 2.3vw, 1.875rem); line-height: 1.25; letter-spacing: -0.015em;
+  max-width: 32ch;
+}
+.piece-head .meta { margin-top: 1.25rem; color: rgb(0 0 0 / 0.72); }
+
+.prose { margin-top: clamp(3rem, 7vw, 5.5rem); }
+.prose > * { max-width: var(--text); }
+.prose > * + * { margin-top: 1.1em; }
+.prose h2 {
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 700; letter-spacing: -0.025em; line-height: 1.1;
+  margin-top: 2.6em; scroll-margin-top: 1.5rem;
+}
+.prose h2 + * { margin-top: 0.75em; }
+.prose ul, .prose ol { padding-left: 1.25em; }
+.prose li + li { margin-top: 0.5em; }
+.prose li::marker { color: var(--muted); }
+.prose strong { font-weight: 700; }
+.prose blockquote { margin-left: 0; padding-left: 1.1rem; border-left: 4px solid var(--hl); font-size: 1.15em; line-height: 1.35; }
+.prose figure { max-width: 100%; margin-top: 2.5rem; margin-bottom: 2.5rem; }
+.prose figure.wide { max-width: 100%; }
+.prose figure.mid { max-width: 54rem; }
+.prose figure.narrow { max-width: 24.375rem; }
+.prose .ph { aspect-ratio: 3 / 2; }
+.prose .ph.tall { aspect-ratio: 4 / 5; max-width: 30rem; }
+.prose .shot { background: var(--soft); padding: clamp(0.75rem, 2.5vw, 2rem); }
+.prose .facts { display: grid; gap: 0.5rem 1.5rem; padding: 1.25rem 0; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); max-width: 54rem; }
+.prose .facts dt { color: var(--muted); }
+.prose .facts dd { margin: 0; font-weight: 700; }
+@media (min-width: 40rem) { .prose .facts { grid-template-columns: repeat(3, 1fr); } .prose .facts div { display: grid; gap: 0.15rem; } }
+
+.next { margin-top: clamp(4rem, 9vw, 7rem); font-weight: 700; }
+
+/* Diagrams in a write-up (inline SVG) */
+.diagram text { fill: var(--ink); font-family: var(--font); }
+.diagram .lbl { font-weight: 700; }
+.diagram .box { fill: none; stroke: var(--ink); stroke-width: 1.5; }
+.diagram .key { fill: var(--hl); stroke: var(--ink); stroke-width: 1.5; }
+.diagram .key + text, .diagram .key ~ text.on-key { fill: var(--on-hl); }
+.diagram .flow { fill: none; stroke: var(--ink); stroke-width: 1.5; }
 .diagram .tip { fill: var(--ink); stroke: none; }
-.diagram .rule { stroke: var(--hair); stroke-width: 1; }
+.diagram .rule { stroke: var(--soft); stroke-width: 2; }
 .diagram-tall { display: none; }
+@media (max-width: 40rem) { .diagram-wide { display: none; } .diagram-tall { display: block; } }
 
-footer { margin-top: 4.5rem; color: var(--muted); font-size: 1rem; line-height: 1.45; }
-footer p { margin: 0 0 .4rem; }
+/* ---------- movement: pages cross-fade where the browser can ---------- */
 
-/* Phones and narrow windows: one column, the label above its text. */
-@media (max-width: 760px) {
-  body { font-size: 1.125rem; }
-  .page { padding-top: 2.75rem; padding-bottom: 3.5rem; }
-  header, section, footer, .top { display: block; }
-  section { margin-top: 2.5rem; }
-  section > h2 { margin-bottom: .55rem; text-align: left; }
-  h1 { font-size: 2.5rem; }
-  .lede { font-size: 1.4rem; }
-  .piece .title { font-size: 1.3rem; }
-  .piece .more { padding-right: 0; }
-  figcaption { padding-left: 0; }
-  section > figure { margin: 1.4rem 0 1.9rem; }
-  figure.narrow { display: none; }
-  .diagram-wide { display: none; }
-  .diagram-tall { display: block; }
-}
-
-/* Moving between pages, and opening a piece, happen smoothly where the browser can do it
-   without scripts. Elsewhere both simply happen at once. */
 @view-transition { navigation: auto; }
-::view-transition-old(root), ::view-transition-new(root) { animation-duration: .28s; }
-.site-name { view-transition-name: site-name; }
-:root { interpolate-size: allow-keywords; }
-.piece::details-content {
-  block-size: 0;
-  overflow: clip;
-  opacity: 0;
-  transition: block-size .3s ease, opacity .3s ease, content-visibility .3s allow-discrete;
-}
-.piece[open]::details-content { block-size: auto; opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
   @view-transition { navigation: none; }
-  .piece::details-content, .piece summary::after { transition: none; }
+  html { scroll-behavior: auto; }
 }
-
-@media print {
-  :root { --paper: #fff; --ink: #000; --muted: #333; --hair: rgba(0, 0, 0, .3); --accent: #000; }
-  body { font-size: 11pt; }
-  .page { max-width: none; padding: 0; }
-  .top, .piece summary::after { display: none; }
-  .piece::details-content { block-size: auto; opacity: 1; content-visibility: visible; }
-  figure, .piece { break-inside: avoid; }
-  h2 { break-after: avoid; }
-  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: .85em; word-break: break-all; }
-}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }

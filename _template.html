@@ -6,8 +6,7 @@
 <title>TITLE · Owen Stefanakos</title>
 <meta name="description" content="ONE SENTENCE ABOUT THIS PIECE.">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#fdfcf6" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#171614" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffd31a">
 <!-- The social card needs full addresses; nothing on the page itself loads from them. -->
 <link rel="canonical" href="https://owenstef.github.io/FOLDER-NAME/">
 <meta property="og:type" content="website">
@@ -21,43 +20,48 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="../img/favicon.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
-<link rel="preload" href="../fonts/etbb-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/familjen-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/schibsted-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-<!-- Copy this file to FOLDER-NAME/index.html, then replace every word in capitals (three of them are in the <head> above). -->
-<div class="page">
+<!-- Copy this file to FOLDER-NAME/index.html, then replace every word in capitals (the title, description and folder name also appear in the <head> above). -->
+<a class="skip" href="#main">Skip to the page</a>
+<header class="band"><div class="wrap bar"><a class="home" href="../">Owen Stefanakos</a><nav aria-label="Sections"><ul><li><a href="../#made">Things I’ve made</a></li><li><a href="../#seasons">Seasons</a></li><li><a href="../#writing">Writing</a></li><li><a href="../#contact">Contact</a></li></ul></nav></div></header>
 
-<nav class="top" aria-label="Site"><a class="site-name back" href="../">Owen Stefanakos</a></nav>
-
+<main id="main">
+<div class="wrap">
 <article>
-<header>
+<header class="piece-head">
 <h1>TITLE</h1>
-<p class="quiet">ONE LINE ABOUT IT. YEAR.</p>
+<p class="standfirst">ONE LINE ABOUT IT.</p>
+<p class="meta">YEAR</p>
 </header>
+<div class="prose">
+<!-- Three facts in a row. Replace each word in capitals; delete this block if you don't want it. -->
+<dl class="facts">
+<div><dt>LABEL</dt><dd>FACT</dd></div>
+<div><dt>LABEL</dt><dd>FACT</dd></div>
+<div><dt>LABEL</dt><dd>FACT</dd></div>
+</dl>
 
-<section>
-<h2>LABEL</h2>
+<!-- A section: copy from <h2> to the last paragraph to add another. Make the id lower case with hyphens. -->
+<h2 id="SECTION-NAME">A HEADING</h2>
 <p>A PARAGRAPH.</p>
-<p>ANOTHER PARAGRAPH.</p>
-</section>
 
-<section>
-<h2>ANOTHER LABEL</h2>
-<p>A PARAGRAPH.</p>
-
-<!-- A picture. Put the file in img/ and set its real width and height in pixels. -->
-<figure>
-<img src="../img/FILE.webp" width="900" height="600" alt="WHAT THE PICTURE SHOWS." loading="lazy" decoding="async">
-<figcaption>A CAPTION.</figcaption>
-</figure>
-</section>
+<!-- A photo slot. To use a real photo, see README.md "Put a photo in place of a placeholder". -->
+<figure class="ph" aria-label="Photo to come"><span class="fill">Photo to come: WHAT THE PHOTO SHOWS.</span></figure>
+</div>
 </article>
+<p class="next"><a href="../">Back to the home page</a></p>
+</div>
+</main>
 
-<footer>
-<p><a class="back" href="../#projects">All projects</a></p>
+<div class="wrap">
+<footer class="foot">
+<p>Owen Stefanakos, San Francisco.</p>
+<p>Set in Familjen Grotesk and Schibsted Grotesk. Plain HTML and CSS; no tracking. Updated November 2026.</p>
 </footer>
-
 </div>
 </body>
 </html>

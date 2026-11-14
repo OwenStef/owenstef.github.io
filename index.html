@@ -4,15 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Owen Stefanakos</title>
-<meta name="description" content="Owen Stefanakos: Philosophy B.A., moving to San Francisco. A job search system I designed, Procure Maine, and a mountain-bike race team.">
+<meta name="description" content="Owen Stefanakos: philosophy graduate, wildland firefighter for the 2026 season, now in San Francisco looking for a first full-time job.">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#fdfcf6" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#171614" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffd31a">
 <!-- The social card needs full addresses; nothing on the page itself loads from them. -->
 <link rel="canonical" href="https://owenstef.github.io/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Owen Stefanakos">
-<meta property="og:description" content="Owen Stefanakos: Philosophy B.A., moving to San Francisco. A job search system I designed, Procure Maine, and a mountain-bike race team.">
+<meta property="og:description" content="Philosophy graduate, wildland firefighter for the 2026 season, now in San Francisco.">
 <meta property="og:url" content="https://owenstef.github.io/">
 <meta property="og:image" content="https://owenstef.github.io/img/card.png">
 <meta property="og:image:width" content="1200">
@@ -21,97 +20,206 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
-<link rel="preload" href="fonts/etbb-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/familjen-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/schibsted-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <!--
-  HOW THIS SITE IS PUT TOGETHER (the full guide is README.md)
-  - This file is the home page. Each block below is a <section> with a label (<h2>) and its text.
-  - A project is one <details class="piece"> block. To add one, copy a whole block and change the words.
-  - A long write-up gets its own folder with an index.html (copy _template.html); link to it from its block.
-  Typeface: ETbb, Michael Sharpe's extension of ET Book (Dmitry Krasny, Bonnie Scranton, Edward Tufte), MIT licence, in fonts/LICENSE.txt.
+HOW THIS PAGE IS PUT TOGETHER (the full guide is README.md)
+- Sections, top to bottom: opening, Things I've made, Seasons, Writing, Off the clock, Contact.
+- Anything marked class="fill" is filler to replace with your own words.
+- A photo slot is a <figure class="ph">. To put a picture in, see README.md "Add a photo".
 -->
-<div class="page">
+<a class="skip" href="#main">Skip to the page</a>
 
-<header>
-<h1 class="site-name">Owen Stefanakos</h1>
-<p>I have a Philosophy B.A. from Colorado College (May 2026) and I’m moving to San Francisco in November 2026.</p>
+<header class="band">
+<div class="wrap bar">
+<nav aria-label="Sections">
+<ul>
+<li><a href="#made">Things I’ve made</a></li>
+<li><a href="#seasons">Seasons</a></li>
+<li><a href="#writing">Writing</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+</nav>
+</div>
 </header>
 
-<section id="purpose">
-<h2>Purpose</h2>
-<p class="lede">I want to work somewhere that uses AI in a really positive way, where I’m adding value and making a positive change.</p>
+<main id="main">
+
+<section class="band" aria-labelledby="name">
+<div class="wrap opening">
+<h1 class="name" id="name">Owen<br>Stefanakos</h1>
+<div class="opening-grid">
+<div class="words">
+<!-- DRAFT, OWEN: every fact here is from your resume; the sentence is mine. Rewrite it. -->
+<p class="intro">I studied philosophy at Colorado College, spent this summer on a wildland fire crew out of Oregon, and worked four summers running food at Fore Street in Portland, Maine.</p>
+<p class="now fill"><b>Now</b>I’ve just moved to San Francisco and I’m looking for my first full-time job, in operations, customer success or AI policy.</p>
+</div>
+<figure class="ph" aria-label="Photo to come">
+<span class="fill">Photo to come: you, outside. Portrait, 4 by 5.</span>
+</figure>
+</div>
+</div>
 </section>
 
-<section id="interests">
-<h2>Interests</h2>
-<!-- DRAFT, OWEN: these three lines are taken from PREFERENCES.md ("Things that pull me in"). Edit, cut or add lines; one <li> each. -->
-<ul class="plain">
-<li>AI safety, governance and ethics.</li>
-<li>Industries that are traditionally less technical and less open to change.</li>
-<li>Healthcare, education, and climate and environmental work.</li>
+<div class="wrap">
+
+<section class="block" id="made" aria-labelledby="made-h">
+<h2 id="made-h">Things I’ve made</h2>
+
+<article class="lead-work">
+<figure class="shot">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="img/home-dark.webp 1x, img/home-dark@2x.webp 2x" width="900" height="862">
+<img src="img/home-light.webp" srcset="img/home-light.webp 1x, img/home-light@2x.webp 2x" alt="The Desk, the one page the job search system gives me: what needs me today, the week’s progress and the roles to apply to." width="900" height="862" decoding="async">
+</picture>
+</figure>
+<div class="words">
+<h3>Job search system <span class="years">2026</span></h3>
+<p>A job search is really three searches at once: a company doing something I care about, a role there I actually fit, and someone I know who works there. I designed a system that finds the overlap every morning, and directed Claude Code to build it.</p>
+<a class="more-link" href="job-search-system/">How it works</a>
+</div>
+</article>
+
+<div class="works">
+<article>
+<figure class="ph" aria-label="Photo to come"><span class="fill">Photo to come: Procure Maine, summer 2020.</span></figure>
+<h3><a href="procure-maine/">Procure Maine</a> <span class="years">2020–21</span></h3>
+<p>A concierge and delivery company I co-founded in high school, when Maine told out-of-state visitors to quarantine. We pitched 27 clients and closed 18, and the Sunday Boston Globe wrote about us.</p>
+</article>
+<article>
+<figure class="ph" aria-label="Photo to come"><span class="fill">Photo to come: the team at a race.</span></figure>
+<h3>Southern Maine MTB Syndicate <span class="years">2016–21</span></h3>
+<p>A high school mountain-bike team I founded and raced on. It grew to more than 40 racers in two years and won the New England Championships.</p>
+</article>
+</div>
+
+<div class="smaller">
+<h3>Smaller things</h3>
+<ul>
+<li><strong>A text-to-speech app</strong> I built with Claude Code for someone in my family.</li>
+<li><strong>A playlist mixer</strong> that uses the Spotify API.</li>
+<li><strong>Full House Local</strong>, an experiment in finding restaurants that need marketing help: Google Maps data feeding Zapier outreach.</li>
 </ul>
-</section>
-
-<section id="projects">
-<h2>Projects</h2>
-<div class="pieces">
-
-<!-- PIECE: copy from here ... -->
-<details class="piece" name="pieces">
-<summary>
-<span class="title">Job search system</span>
-<span class="when">2026</span>
-<span class="gist">A job search system I designed and directed Claude Code to build.</span>
-</summary>
-<div class="more">
-<p>A job search is really three searches at once: a company doing something I care about, a role there I actually fit, and someone I know who works there. Each one alone is easy. The overlap is what gets you an interview, and it’s the part I kept losing track of. I wanted it surfaced every morning without me hunting for it.</p>
-<p><a class="go" href="job-search-system/">Read the full write-up</a></p>
-</div>
-</details>
-<!-- ... to here. -->
-
-<details class="piece" name="pieces">
-<summary>
-<span class="title">Procure Maine</span>
-<span class="when">2020–21</span>
-<span class="gist">A concierge and delivery company I co-founded in high school.</span>
-</summary>
-<div class="more">
-<p>I co-founded Procure Maine, a concierge and delivery company, in high school. We started it when Maine required out-of-state visitors to quarantine for Covid, ran it from May 2020 to August 2021, and pivoted to serving a retirement community in Maine once the mandate was lifted.</p>
-<p>We pitched 27 clients, mostly businesses, and closed 18. We built supply relationships with local bakeries, surf shops and grocery stores. It was covered by the Sunday Boston Globe (<a href="https://www.bostonglobe.com/2020/07/01/lifestyle/3-maine-teens-start-concierge-service-so-tourists-can-quarantine-if-needed/">read the piece</a>), Channel 8 News and 99.9 The Wolf radio.</p>
-</div>
-</details>
-
-<details class="piece" name="pieces">
-<summary>
-<span class="title">Mountain-bike race team</span>
-<span class="when">2016–21</span>
-<span class="gist">A high school race team I founded, and raced on.</span>
-</summary>
-<div class="more">
-<p>I founded a high school mountain-bike race team, the Southern Maine MTB Syndicate, and raced on it. It grew to 40+ racers within two years, and the team won the New England Championships.</p>
-</div>
-</details>
-
 </div>
 </section>
 
-<!-- OWEN: a Writing section goes here when you have a piece to show. Copy the Projects section, change the label to Writing, and use the same blocks. -->
+<section class="block" id="seasons" aria-labelledby="seasons-h">
+<div class="block-head">
+<h2 id="seasons-h">Seasons</h2>
+<!-- DRAFT, OWEN: the line below is mine. -->
+<p class="fill">Most of my work has come a season at a time. Here is all of it, newest first.</p>
+</div>
 
-<section id="contact">
-<h2>Contact</h2>
-<ul class="plain">
-<li>LinkedIn: <a href="https://www.linkedin.com/in/owenstefanakos/">linkedin.com/in/owenstefanakos</a></li>
-<li>Email: <a href="mailto:maineowen@gmail.com">maineowen@gmail.com</a></li>
+<div class="seasons">
+<!-- YEAR: copy a whole <div class="year"> block for a new year; copy one <li class="entry"> for a new line. -->
+<div class="year">
+<h3>2026</h3>
+<ol>
+<li class="entry"><span class="when">November</span><span class="what">Moved to San Francisco.</span><span class="where">San Francisco, CA</span></li>
+<li class="entry"><span class="when">October</span><span class="what"><a href="job-search-system/">Built a job search system</a> with Claude Code.</span><span class="where"></span></li>
+<li class="entry"><span class="when">June – Sept.</span><span class="what"><a href="fire-season/"><strong>Wildland Firefighter (FFT2)</strong></a>, Miller Timber Services. A 20-person hand crew; three assignments, 49 days on the line.</span><span class="where">Philomath, OR</span></li>
+<li class="entry"><span class="when">May</span><span class="what"><strong>B.A. in Philosophy</strong>, Colorado College. <a href="thesis/">Senior thesis</a> published in an undergraduate research journal.</span><span class="where">Colorado Springs, CO</span></li>
+</ol>
+</div>
+
+<div class="year">
+<h3>2025</h3>
+<ol>
+<li class="entry"><span class="when">June – Sept.</span><span class="what"><strong>Assistant Event Coordinator</strong>, 320 Guest Ranch. Weddings and events of 50 to 200+ guests, up to five a week in peak season.</span><span class="where">Gallatin Gateway, MT</span></li>
+<li class="entry"><span class="when">Jan. – May</span><span class="what"><strong>Study abroad</strong>, living with a host family; classes and daily life in Spanish.</span><span class="where">Buenos Aires, Argentina</span></li>
+</ol>
+</div>
+
+<div class="year">
+<h3>2024</h3>
+<ol>
+<li class="entry"><span class="when">Sept. – Dec.</span><span class="what"><strong>Barback</strong>, Grandview Restaurant at Garden of the Gods Country Club, during the school term.</span><span class="where">Colorado Springs, CO</span></li>
+<li class="entry"><span class="when">Sept. 2024 – May 2026</span><span class="what"><strong>Editor</strong>, Anamnesis, Colorado College’s undergraduate philosophy journal. Four copy editors, five to seven articles an issue.</span><span class="where">Colorado Springs, CO</span></li>
+<li class="entry"><span class="when">June – Sept.</span><span class="what"><strong>Manager (part-time)</strong>, Jay Enterprises. A four-person property team across seven properties.</span><span class="where">Freeport, ME</span></li>
+</ol>
+</div>
+
+<div class="year">
+<h3>2023</h3>
+<ol>
+<li class="entry"><span class="when">August</span><span class="what"><strong>Orientation Leader</strong>, Colorado College.</span><span class="where">Colorado Springs, CO</span></li>
+<li class="entry"><span class="when">June – August</span><span class="what"><strong>Server and Barback</strong>, Porthole Restaurant, alongside Fore Street.</span><span class="where">Portland, ME</span></li>
+<li class="entry"><span class="when">Jan. – Dec.</span><span class="what"><strong>Treasurer</strong>, Kappa Sigma. A $40K annual chapter budget.</span><span class="where">Colorado Springs, CO</span></li>
+</ol>
+</div>
+
+<div class="year">
+<h3>2021</h3>
+<ol>
+<li class="entry"><span class="when">Oct. 2021 – Apr. 2022</span><span class="what"><strong>Line Cook and Cashier</strong>, Alf’s Restaurant. Up to 1,000 customers a day at a ski-resort restaurant.</span><span class="where">Alta, UT</span></li>
+<li class="entry"><span class="when">Summers, 2021–24</span><span class="what"><strong>Host, Admin and Server’s Assistant</strong>, Fore Street. Running food for up to 350 guests a night at a James Beard Award-winning restaurant.</span><span class="where">Portland, ME</span></li>
+</ol>
+</div>
+
+<div class="year">
+<h3>2020</h3>
+<ol>
+<li class="entry"><span class="when">May 2020 – Aug. 2021</span><span class="what"><a href="procure-maine/"><strong>Co-founder</strong>, Procure Maine</a>.</span><span class="where">Portland, ME</span></li>
+<li class="entry"><span class="when">Jan. – Sept.</span><span class="what"><strong>Youth member of the board</strong>, Safe BAE, a national organization working to prevent sexual assault in schools.</span><span class="where">Portland, ME</span></li>
+</ol>
+</div>
+
+<div class="year">
+<h3>2019</h3>
+<ol>
+<li class="entry"><span class="when">Aug. 2019 – Feb. 2020</span><span class="what"><strong>Sales Associate</strong>, Patagonia, at the busiest store outside Ventura.</span><span class="where">Freeport, ME</span></li>
+<li class="entry"><span class="when">Jan. – April</span><span class="what"><strong>Exchange student</strong>, living with a French family and going to the local school.</span><span class="where">Saint-Genis-Laval, France</span></li>
+</ol>
+</div>
+
+<div class="year">
+<h3>2016</h3>
+<ol>
+<li class="entry"><span class="when">Aug. 2016 – Nov. 2021</span><span class="what"><strong>Founder and racer</strong>, Southern Maine MTB Syndicate.</span><span class="where">Portland, ME</span></li>
+</ol>
+</div>
+</div>
+</section>
+
+<section class="block" id="writing" aria-labelledby="writing-h">
+<h2 id="writing-h">Writing</h2>
+<div class="writing">
+<article class="feature-piece">
+<h3><a href="thesis/">Critical Theory of Digital Lifeworlds: Habermas in the Age of Prediction</a></h3>
+<p class="source">My senior thesis, published in the Critical Theory &amp; Social Justice Journal of Undergraduate Research (Occidental College), Vol. 14, May 2026.</p>
+<p class="abstract">Predictive algorithms that filter and target what we read split the public sphere into parallel segments, each with its own standard of what counts as credible. I use Habermas’s distinction between lifeworld and system to say why, and weigh the EU’s Digital Services Act and Regulation (EU) 2024/900 as responses.</p>
+</article>
+<!-- FILLER, OWEN: these two are placeholders for pieces you might write. Replace or delete. -->
+<ul class="pieces fill">
+<li>What a fire crew’s after-action review gets right <span class="tag">Draft</span></li>
+<li>Three hundred and fifty covers a night <span class="tag">Draft</span></li>
 </ul>
+</div>
 </section>
 
-<footer>
+<section class="block" id="off" aria-labelledby="off-h">
+<h2 id="off-h">Off the clock</h2>
+<p class="big-line">Mountain biking, skiing, cooking, history, economic trends, and AI safety and policy.</p>
+<p class="aside-line">I speak conversational Spanish and some French. <span class="fill">Reading right now: a book you’d name here.</span></p>
+</section>
+
+<section class="block" id="contact" aria-labelledby="contact-h">
+<h2 id="contact-h">Contact</h2>
+<a class="email" href="mailto:maineowen@gmail.com">maineowen@gmail.com</a>
+<p class="contact-more"><a href="https://www.linkedin.com/in/owenstefanakos/">LinkedIn</a></p>
+</section>
+
+</div>
+</main>
+
+<div class="wrap">
+<footer class="foot">
 <p>Owen Stefanakos, San Francisco.</p>
+<p>Set in Familjen Grotesk and Schibsted Grotesk. Plain HTML and CSS; no tracking. Updated November 2026.</p>
 </footer>
-
 </div>
 </body>
 </html>
