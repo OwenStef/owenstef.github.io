@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Owen Stefanakos</title>
+<meta name="description" content="Owen Stefanakos: Philosophy B.A., moving to San Francisco. A job search system I designed, Procure Maine, and a mountain-bike race team.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<header>
+<h1>Owen Stefanakos</h1>
+<p class="lede">I have a Philosophy B.A. from Colorado College (May 2026) and I'm moving to San Francisco in November 2026.</p>
+<p class="lede">I want to work somewhere that uses AI in a really positive way, where I'm adding value and making a positive change.</p>
+<nav><a href="#search">Job search system</a><a href="#procure">Procure Maine</a><a href="#bikes">Mountain-bike team</a><a href="#contact">Contact</a></nav>
+</header>
+
+<section id="search">
+<h2>Project: my job search system</h2>
+
+<h3>The problem</h3>
+<p>A job search is really three searches at once: a company doing something I care about, a role there I actually fit, and someone I know who works there. Each one alone is easy. The overlap is what gets you an interview, and it's the part I kept losing track of. I wanted it surfaced every morning without me hunting for it.</p>
+
+<h3>What I built</h3>
+<p>I'm not a software engineer. I designed this system and directed Claude Code to build it; I didn't hand-write the code. My job was deciding what it should do, setting the rules, and checking that it worked.</p>
+<p>It has four parts:</p>
+<ul>
+<li><strong>Fetchers and an inbox sweep.</strong> Scheduled jobs on GitHub Actions pull postings from company job boards and file my email. No AI involved, so they're cheap and predictable.</li>
+<li><strong>Triage.</strong> A cheap model reads each new posting against a plain-English file of what I want and a written scoring rubric. Obvious mismatches, like roles asking for 3+ years, get dropped by plain rules before any model sees them.</li>
+<li><strong>One activity record.</strong> Everything I do (a message, a call, an application) is one new line in an append-only log. Statuses and reminders are worked out from it, so nothing gets lost by overwriting.</li>
+<li><strong>The Desk.</strong> One web page that is my whole interface: best-fit roles and who could refer me, what needs me today, and a page per company.</li>
+</ul>
+<p>In all: 48 scripts, 9 scheduled workflows, 8 AI helper roles and 10 saved routines.</p>
+
+<figure>
+<svg class="diagram" viewBox="0 0 760 282" role="img" aria-label="Scripts do the plumbing and one cheap model step does the scoring. Sources feed scripts, then triage, then the activity log, then the Desk; every tap on the Desk adds a row to the log.">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor" style="color:var(--quiet)"/></marker></defs>
+<text x="30" y="28" font-size="15" font-weight="600">Scripts do the plumbing; one cheap model step does the scoring</text>
+<text class="q" x="30" y="48" font-size="11.5">Highlighted: the step where a cheap model reads and scores</text>
+<g class="ln"><path d="M154 106H174" marker-end="url(#ar)"/><path d="M298 106H318" marker-end="url(#ar)"/><path d="M442 106H462" marker-end="url(#ar)"/><path d="M586 106H606" marker-end="url(#ar)"/><path d="M668 142V180H524V142" marker-end="url(#ar)"/></g>
+<rect class="box" x="30" y="70" width="124" height="72" rx="8"/>
+<text x="92" y="94" text-anchor="middle" font-size="13" font-weight="600">Sources</text><text class="q" x="92" y="110" text-anchor="middle" font-size="11.5">Job boards,</text><text class="q" x="92" y="126" text-anchor="middle" font-size="11.5">my inbox</text>
+<rect class="box" x="174" y="70" width="124" height="72" rx="8"/>
+<text x="236" y="94" text-anchor="middle" font-size="13" font-weight="600">Scripts</text><text class="q" x="236" y="110" text-anchor="middle" font-size="11.5">Fetch, filter,</text><text class="q" x="236" y="126" text-anchor="middle" font-size="11.5">sort mail. No AI</text>
+<rect class="hi" x="318" y="70" width="124" height="72" rx="8"/>
+<text x="380" y="94" text-anchor="middle" font-size="13" font-weight="600">Triage</text><text class="q" x="380" y="110" text-anchor="middle" font-size="11.5">Cheap model</text><text class="q" x="380" y="126" text-anchor="middle" font-size="11.5">scores each role</text>
+<rect class="box" x="462" y="70" width="124" height="72" rx="8"/>
+<text x="524" y="94" text-anchor="middle" font-size="13" font-weight="600">Activity log</text><text class="q" x="524" y="110" text-anchor="middle" font-size="11.5">Append-only:</text><text class="q" x="524" y="126" text-anchor="middle" font-size="11.5">the one record</text>
+<rect class="box" x="606" y="70" width="124" height="72" rx="8"/>
+<text x="668" y="94" text-anchor="middle" font-size="13" font-weight="600">The Desk</text><text class="q" x="668" y="110" text-anchor="middle" font-size="11.5">My one screen,</text><text class="q" x="668" y="126" text-anchor="middle" font-size="11.5">drafts only</text>
+<text class="q" x="596" y="198" text-anchor="middle" font-size="11.5">every tap adds a row</text>
+<rect class="rule" x="30" y="222" width="700" height="40" rx="8"/>
+<text x="380" y="247" text-anchor="middle" font-size="13">Rule: nothing is sent or submitted for me. Everything outgoing is a draft.</text>
+</svg>
+<figcaption>Postings flow left to right; everything I do on the Desk is written back to the log, which is what the Desk reads.</figcaption>
+</figure>
+
+<figure>
+<img src="img/home.webp" width="1600" height="1250" alt="The Desk home page: a count line, the week's progress, an apply queue and what needs attention today." loading="lazy">
+<figcaption>The Desk's home page. The data shown is made up.</figcaption>
+</figure>
+<figure>
+<img src="img/best-fits.webp" width="1600" height="1075" alt="The Best fits list on the Desk, each role with why it ranks and who could refer me." loading="lazy">
+<figcaption>Best fits, with who could refer me. The data shown is made up.</figcaption>
+</figure>
+<figure>
+<img src="img/company.webp" width="1600" height="1375" alt="A company page on the Desk." loading="lazy">
+<figcaption>A company page. The data shown is made up.</figcaption>
+</figure>
+<figure class="phone">
+<img src="img/home-phone.webp" width="780" height="1688" alt="The Desk home page on a phone." loading="lazy">
+<figcaption>The same page on a phone. The data shown is made up.</figcaption>
+</figure>
+
+<h3>How it runs</h3>
+<p>Overnight, workflows fetch new postings and copy my tracker into the repo. Each morning one Claude session runs the routine: it checks the fetch worked, hands the bulk reading to cheaper helper models, and scores what's left. Through the day the inbox sweep runs hourly and pings my phone only for replies and interview mail. Then I open the Desk.</p>
+<p>The split matters. Fetching, filtering, validating, mirroring and the week's numbers are plain scripts. Models only do judgment work: scoring fit, summarizing, drafting. If a script can produce a number, a script produces it.</p>
+<p>One hard rule: it never sends, submits or posts anything for me. Emails are drafts, applications are prepared, and I press the buttons. The only exceptions go to me alone: my daily news digest, phone alerts, and calendar blocks it made itself.</p>
+
+<h3>What broke, and what I changed</h3>
+<ol>
+<li><strong>GitHub's schedule dropped runs.</strong> Since November 4 it delivered only 3 or 4 of the 34 hourly inbox runs a day, and on November 10 the fetch started four hours after the morning routine. I wrote up an outside timer that calls GitHub to start the same workflows on time, and kept the built-in schedules as a backup.</li>
+<li><strong>It cost too much.</strong> Early on the morning routine used about 60% of my weekly AI usage: a 34 to 50 minute session on the most expensive model, with models doing plumbing like copying sheet data. I moved the plumbing into scripts and switched to the cheapest models that do each job well. Recent runs take 10 to 22 minutes with 4 to 6 helper runs.</li>
+<li><strong>Failures were silent.</strong> An October audit found the fetch hadn't run (a test failed) and only the morning routine noticed, two hours later. Some steps had also been skipped for days. Now every workflow records a heartbeat as proof it ran, and a health board rates the system red, amber or green and pushes to my phone only on red.</li>
+</ol>
+</section>
+
+<section id="procure">
+<h2>Procure Maine</h2>
+<p>I co-founded Procure Maine, a concierge and delivery company, in high school. We started it when Maine required out-of-state visitors to quarantine for Covid, ran it from May 2020 to August 2021, and pivoted to serving a retirement community in Maine once the mandate was lifted.</p>
+<p>We pitched 27 clients, mostly businesses, and closed 18. We built supply relationships with local bakeries, surf shops and grocery stores. It was covered by the Sunday Boston Globe (<a href="https://www.bostonglobe.com/2020/07/01/lifestyle/3-maine-teens-start-concierge-service-so-tourists-can-quarantine-if-needed/">read the piece</a>), Channel 8 News and 99.9 The Wolf radio.</p>
+</section>
+
+<section id="bikes">
+<h2>The mountain-bike race team</h2>
+<p>I founded a high school mountain-bike race team, the Southern Maine MTB Syndicate, and raced on it. It grew to 40+ racers within two years, and the team won the New England Championships.</p>
+</section>
+
+<section id="contact">
+<h2>Contact</h2>
+<p>LinkedIn: <a href="https://www.linkedin.com/in/owenstefanakos/">linkedin.com/in/owenstefanakos</a></p>
+<p>Email: <a href="mailto:maineowen@gmail.com">maineowen@gmail.com</a></p>
+</section>
+
+<footer>Owen Stefanakos, San Francisco. The screenshots use made-up data.</footer>
+</main>
+</body>
+</html>
