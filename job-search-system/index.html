@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Job search system · Owen Stefanakos</title>
+<meta name="description" content="A job search system I designed and directed Claude Code to build: what it does, how it runs, and what broke.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fdfcf6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171614" media="(prefers-color-scheme: dark)">
+<!-- The social card needs full addresses; nothing on the page itself loads from them. -->
+<link rel="canonical" href="https://owenstef.github.io/job-search-system/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Job search system · Owen Stefanakos">
+<meta property="og:description" content="A job search system I designed and directed Claude Code to build: what it does, how it runs, and what broke.">
+<meta property="og:url" content="https://owenstef.github.io/job-search-system/">
+<meta property="og:image" content="https://owenstef.github.io/img/card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Owen Stefanakos">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../img/favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="preload" href="../fonts/etbb-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div class="page">
+
+<nav class="top" aria-label="Site"><a class="site-name back" href="../">Owen Stefanakos</a></nav>
+
+<article>
+<header>
+<h1>Job search system</h1>
+<p class="quiet">A job search system I designed and directed Claude Code to build. 2026.</p>
+</header>
+
+<section>
+<h2>The problem</h2>
+<p>A job search is really three searches at once: a company doing something I care about, a role there I actually fit, and someone I know who works there. Each one alone is easy. The overlap is what gets you an interview, and it’s the part I kept losing track of. I wanted it surfaced every morning without me hunting for it.</p>
+</section>
+
+<section>
+<h2>What I built</h2>
+<p>I’m not a software engineer. I designed this system and directed Claude Code to build it; I didn’t hand-write the code. My job was deciding what it should do, setting the rules, and checking that it worked.</p>
+<p>It has four parts:</p>
+<ul>
+<li><strong>Fetchers and an inbox sweep.</strong> Scheduled jobs on GitHub Actions pull postings from company job boards and file my email. No AI involved, so they’re cheap and predictable.</li>
+<li><strong>Triage.</strong> A cheap model reads each new posting against a plain-English file of what I want and a written scoring rubric. Obvious mismatches, like roles asking for 3+ years, get dropped by plain rules before any model sees them.</li>
+<li><strong>One activity record.</strong> Everything I do (a message, a call, an application) is one new line in an append-only log. Statuses and reminders are worked out from it, so nothing gets lost by overwriting.</li>
+<li><strong>The Desk.</strong> One web page that is my whole interface: best-fit roles and who could refer me, what needs me today, and a page per company.</li>
+</ul>
+<p>In all: 48 scripts, 9 scheduled workflows, 8 AI helper roles and 10 saved routines.</p>
+
+<figure>
+<svg class="diagram diagram-wide" viewBox="29 0 702 250" role="img" aria-label="Scripts do the plumbing and one cheap model step does the scoring. Sources feed scripts, then triage, then the activity log, then the Desk; every tap on the Desk adds a row to the log.">
+<text class="name" x="30" y="22" font-size="19">Scripts do the plumbing; one cheap model step does the scoring</text>
+<text x="30" y="44" font-size="14.5">Highlighted: the step where a cheap model reads and scores</text>
+<rect class="box" x="30" y="64" width="124" height="76"/>
+<text class="name" x="92" y="90" text-anchor="middle" font-size="18">Sources</text>
+<text x="92" y="110" text-anchor="middle" font-size="14">Job boards,</text><text x="92" y="127" text-anchor="middle" font-size="14">my inbox</text>
+<path class="flow" d="M154 102H169"/><path class="tip" d="M174 102l-7 -3.5v7z"/>
+<rect class="box" x="174" y="64" width="124" height="76"/>
+<text class="name" x="236" y="90" text-anchor="middle" font-size="18">Scripts</text>
+<text x="236" y="110" text-anchor="middle" font-size="14">Fetch, filter,</text><text x="236" y="127" text-anchor="middle" font-size="14">sort mail. No AI</text>
+<path class="flow" d="M298 102H311.5"/><path class="tip" d="M316.5 102l-7 -3.5v7z"/>
+<rect class="key" x="318" y="64" width="124" height="76"/>
+<text class="name" x="380" y="90" text-anchor="middle" font-size="18">Triage</text>
+<text x="380" y="110" text-anchor="middle" font-size="14">Cheap model</text><text x="380" y="127" text-anchor="middle" font-size="14">scores each role</text>
+<path class="flow" d="M443.5 102H457"/><path class="tip" d="M462 102l-7 -3.5v7z"/>
+<rect class="box" x="462" y="64" width="124" height="76"/>
+<text class="name" x="524" y="90" text-anchor="middle" font-size="18">Activity log</text>
+<text x="524" y="110" text-anchor="middle" font-size="14">Append-only:</text><text x="524" y="127" text-anchor="middle" font-size="14">the one record</text>
+<path class="flow" d="M586 102H601"/><path class="tip" d="M606 102l-7 -3.5v7z"/>
+<rect class="box" x="606" y="64" width="124" height="76"/>
+<text class="name" x="668" y="90" text-anchor="middle" font-size="18">The Desk</text>
+<text x="668" y="110" text-anchor="middle" font-size="14">My one screen,</text><text x="668" y="127" text-anchor="middle" font-size="14">drafts only</text>
+<path class="flow" d="M668 140V176H524V146"/><path class="tip" d="M524 140l-3.5 7h7z"/>
+<text x="596" y="195" text-anchor="middle" font-size="14">every tap adds a row</text>
+<path class="rule" d="M30 216H730"/>
+<text x="30" y="241" font-size="15.5">Rule: nothing is sent or submitted for me. Everything outgoing is a draft.</text>
+</svg>
+<svg class="diagram diagram-tall" viewBox="9 0 322 500" role="img" aria-label="Scripts do the plumbing and one cheap model step does the scoring. Sources feed scripts, then triage, then the activity log, then the Desk; every tap on the Desk adds a row to the log.">
+<text class="name" x="10" y="20" font-size="19">Scripts do the plumbing; one cheap</text><text class="name" x="10" y="43" font-size="19">model step does the scoring</text>
+<text x="10" y="67" font-size="13.5">Highlighted: the step where a cheap model</text><text x="10" y="84" font-size="13.5">reads and scores</text>
+<rect class="box" x="10" y="102" width="250" height="50"/>
+<text class="name" x="24" y="124" font-size="17">Sources</text><text x="24" y="142" font-size="13.5">Job boards, my inbox</text>
+<path class="flow" d="M135 152V167"/><path class="tip" d="M135 172l-3.5 -7h7z"/>
+<rect class="box" x="10" y="172" width="250" height="50"/>
+<text class="name" x="24" y="194" font-size="17">Scripts</text><text x="24" y="212" font-size="13.5">Fetch, filter, sort mail. No AI</text>
+<path class="flow" d="M135 222V235.5"/><path class="tip" d="M135 240.5l-3.5 -7h7z"/>
+<rect class="key" x="10" y="242" width="250" height="50"/>
+<text class="name" x="24" y="264" font-size="17">Triage</text><text x="24" y="282" font-size="13.5">Cheap model scores each role</text>
+<path class="flow" d="M135 293.5V307"/><path class="tip" d="M135 312l-3.5 -7h7z"/>
+<rect class="box" x="10" y="312" width="250" height="50"/>
+<text class="name" x="24" y="334" font-size="17">Activity log</text><text x="24" y="352" font-size="13.5">Append-only: the one record</text>
+<path class="flow" d="M135 362V377"/><path class="tip" d="M135 382l-3.5 -7h7z"/>
+<rect class="box" x="10" y="382" width="250" height="50"/>
+<text class="name" x="24" y="404" font-size="17">The Desk</text><text x="24" y="422" font-size="13.5">My one screen, drafts only</text>
+<path class="flow" d="M260 407H296V337H266"/><path class="tip" d="M260 337l7 -3.5v7z"/>
+<text x="316" y="372" text-anchor="middle" font-size="13.5" transform="rotate(-90 316 372)">every tap adds a row</text>
+<path class="rule" d="M10 452H330"/>
+<text x="10" y="474" font-size="15.5">Rule: nothing is sent or submitted for me.</text><text x="10" y="493" font-size="15.5">Everything outgoing is a draft.</text>
+</svg>
+<figcaption>Postings flow left to right; everything I do on the Desk is written back to the log, which is what the Desk reads.</figcaption>
+</figure>
+
+<figure>
+<picture>
+<source media="(max-width: 760px) and (prefers-color-scheme: dark)" srcset="../img/home-phone-dark.webp 1x, ../img/home-phone-dark@2x.webp 2x" width="390" height="831">
+<source media="(max-width: 760px)" srcset="../img/home-phone-light.webp 1x, ../img/home-phone-light@2x.webp 2x" width="390" height="831">
+<source media="(prefers-color-scheme: dark)" srcset="../img/home-dark.webp 1x, ../img/home-dark@2x.webp 2x" width="900" height="862">
+<img src="../img/home-light.webp" srcset="../img/home-light.webp 1x, ../img/home-light@2x.webp 2x" alt="The Desk home page: a count line, the week’s progress, an apply queue and what needs attention today." loading="lazy" decoding="async" width="900" height="862">
+</picture>
+<figcaption>The Desk’s home page. The data in these screenshots is made up.</figcaption>
+</figure>
+
+<figure>
+<picture>
+<source media="(max-width: 760px) and (prefers-color-scheme: dark)" srcset="../img/fits-phone-dark.webp 1x, ../img/fits-phone-dark@2x.webp 2x" width="390" height="597">
+<source media="(max-width: 760px)" srcset="../img/fits-phone-light.webp 1x, ../img/fits-phone-light@2x.webp 2x" width="390" height="597">
+<source media="(prefers-color-scheme: dark)" srcset="../img/fits-dark.webp 1x, ../img/fits-dark@2x.webp 2x" width="900" height="578">
+<img src="../img/fits-light.webp" srcset="../img/fits-light.webp 1x, ../img/fits-light@2x.webp 2x" alt="The Best fits list on the Desk, each role with why it ranks and who could refer me." loading="lazy" decoding="async" width="900" height="578">
+</picture>
+<figcaption>Best fits, with who could refer me.</figcaption>
+</figure>
+
+<figure>
+<picture>
+<source media="(max-width: 760px) and (prefers-color-scheme: dark)" srcset="../img/company-phone-dark.webp 1x, ../img/company-phone-dark@2x.webp 2x" width="390" height="983">
+<source media="(max-width: 760px)" srcset="../img/company-phone-light.webp 1x, ../img/company-phone-light@2x.webp 2x" width="390" height="983">
+<source media="(prefers-color-scheme: dark)" srcset="../img/company-dark.webp 1x, ../img/company-dark@2x.webp 2x" width="900" height="679">
+<img src="../img/company-light.webp" srcset="../img/company-light.webp 1x, ../img/company-light@2x.webp 2x" alt="A company page on the Desk." loading="lazy" decoding="async" width="900" height="679">
+</picture>
+<figcaption>A company page.</figcaption>
+</figure>
+
+<figure class="narrow">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="../img/home-phone-dark.webp 1x, ../img/home-phone-dark@2x.webp 2x" width="390" height="831">
+<img src="../img/home-phone-light.webp" srcset="../img/home-phone-light.webp 1x, ../img/home-phone-light@2x.webp 2x" alt="The Desk home page on a phone." loading="lazy" decoding="async" width="390" height="831">
+</picture>
+<figcaption>The same page on a phone.</figcaption>
+</figure>
+</section>
+
+<section>
+<h2>How it runs</h2>
+<p>Overnight, workflows fetch new postings and copy my tracker into the repo. Each morning one Claude session runs the routine: it checks the fetch worked, hands the bulk reading to cheaper helper models, and scores what’s left. Through the day the inbox sweep runs hourly and pings my phone only for replies and interview mail. Then I open the Desk.</p>
+<p>The split matters. Fetching, filtering, validating, mirroring and the week’s numbers are plain scripts. Models only do judgment work: scoring fit, summarizing, drafting. If a script can produce a number, a script produces it.</p>
+<p>One hard rule: it never sends, submits or posts anything for me. Emails are drafts, applications are prepared, and I press the buttons. The only exceptions go to me alone: my daily news digest, phone alerts, and calendar blocks it made itself.</p>
+</section>
+
+<section>
+<h2>What broke, and what I changed</h2>
+<ol>
+<li><strong>GitHub’s schedule dropped runs.</strong> Since November 4 it delivered only 3 or 4 of the 34 hourly inbox runs a day, and on November 10 the fetch started four hours after the morning routine. I wrote up an outside timer that calls GitHub to start the same workflows on time, and kept the built-in schedules as a backup.</li>
+<li><strong>It cost too much.</strong> Early on the morning routine used about 60% of my weekly AI usage: a 34 to 50 minute session on the most expensive model, with models doing plumbing like copying sheet data. I moved the plumbing into scripts and switched to the cheapest models that do each job well. Recent runs take 10 to 22 minutes with 4 to 6 helper runs.</li>
+<li><strong>Failures were silent.</strong> An October audit found the fetch hadn’t run (a test failed) and only the morning routine noticed, two hours later. Some steps had also been skipped for days. Now every workflow records a heartbeat as proof it ran, and a health board rates the system red, amber or green and pushes to my phone only on red.</li>
+</ol>
+</section>
+</article>
+
+<footer>
+<p><a class="back" href="../#projects">All projects</a></p>
+<p>The screenshots use made-up data.</p>
+</footer>
+
+</div>
+</body>
+</html>
