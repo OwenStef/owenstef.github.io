@@ -8,11 +8,16 @@
   --paper: #ffffff;     /* page background */
   --ink: #161614;       /* text, bars, lines */
   --muted: #5c5b55;     /* small print: dates, places, captions */
-  --winter: #c6d8e5;    /* the four season fields behind the chart */
-  --spring: #c2d8a2;
-  --summer: #ffd42e;
+  --winter: #e8eff5;    /* the four season fields behind the chart: pale, so the bars are what you see */
+  --spring: #e9f1da;
+  --summer: #fff1b3;
+  --fall: #f9decb;
+  --winter-b: #9dbdd3;  /* the same four at full strength: only the thin band along the top of the chart */
+  --spring-b: #a5c77a;
+  --summer-b: #ffd42e;
+  --fall-b: #ed9c68;
   --hl: #ffd42e;        /* link highlighter: stays bright in the dark scheme too */
-  --fall: #ed9c68;
+  --rule: #d8d7d0;      /* hairlines between rows in a list */
   --line: #161614;      /* the one line over the footer */
   --serif: "Besley", "Besley Fallback", Georgia, serif;
   --sans: "Archivo", "Archivo Fallback", Arial, sans-serif;
@@ -30,10 +35,15 @@
     --paper: #131312;
     --ink: #edece7;
     --muted: #a3a29b;
-    --winter: #24425a;
-    --spring: #33522a;
-    --summer: #776000;
-    --fall: #713a1b;
+    --winter: #1a2630;
+    --spring: #1e2a19;
+    --summer: #2e290b;
+    --fall: #33211a;
+    --winter-b: #3f7096;
+    --spring-b: #5c8c49;
+    --summer-b: #c9a400;
+    --fall-b: #b96233;
+    --rule: #35352f;
   }
 }
 
@@ -151,7 +161,7 @@ h2 {
 h3 { font-weight: 600; font-size: 1.25rem; line-height: 1.25; }
 section { margin-top: var(--gap); }
 section > p { max-width: var(--prose); }
-#seasons { margin-top: 3rem; }
+#stories { margin-top: 3.5rem; }
 
 /* ---------- top line ---------- */
 /* The home page has only the nav; the other pages put the name before it. */
@@ -178,6 +188,8 @@ section > p { max-width: var(--prose); }
   font-family: var(--sans);
   font-size: .9375rem;
 }
+.top ul a { text-decoration: none; }
+.top ul a:hover, .top ul a:focus-visible { text-decoration: underline; }
 .top ul a {
   display: inline-flex;
   align-items: center;
@@ -297,9 +309,6 @@ section > p { max-width: var(--prose); }
 .key i.o { height: .5rem; background: none; border: 2px solid var(--ink); border-top: 0; }
 
 
-/* the evidence above the chart: four short paragraphs, then room before the chart */
-.proof { max-width: var(--prose); display: grid; row-gap: .75rem; margin-top: .75rem; }
-.proof + .chart { margin-top: 2rem; }
 .chart {
   position: relative;
   margin-top: 1rem;
@@ -313,12 +322,19 @@ section > p { max-width: var(--prose); }
   position: absolute;
   top: 0; bottom: 0; right: 0;
   left: var(--yc);
-  background: linear-gradient(to right,
-    var(--winter) 0 16.667%,
-    var(--spring) 16.667% 41.667%,
-    var(--summer) 41.667% 66.667%,
-    var(--fall) 66.667% 91.667%,
-    var(--winter) 91.667% 100%);
+  background:
+    linear-gradient(to right,
+      var(--winter-b) 0 16.667%,
+      var(--spring-b) 16.667% 41.667%,
+      var(--summer-b) 41.667% 66.667%,
+      var(--fall-b) 66.667% 91.667%,
+      var(--winter-b) 91.667% 100%) top / 100% .3125rem no-repeat,
+    linear-gradient(to right,
+      var(--winter) 0 16.667%,
+      var(--spring) 16.667% 41.667%,
+      var(--summer) 41.667% 66.667%,
+      var(--fall) 66.667% 91.667%,
+      var(--winter) 91.667% 100%);
 }
 .chart > * { position: relative; }
 
@@ -326,7 +342,7 @@ section > p { max-width: var(--prose); }
 .hd {
   display: grid;
   grid-template-columns: var(--yc) repeat(12, minmax(0, 1fr));
-  padding-top: .5rem;
+  padding-top: .75rem;
 }
 .hd ol { display: contents; }
 .hd .seasons li {
@@ -387,7 +403,9 @@ section > p { max-width: var(--prose); }
   padding-block: .375rem;
 }
 @media (min-width: 60rem) {
-  .yr ol { grid-auto-rows: 1.65rem; row-gap: .25rem; }
+  .yr ol { grid-auto-rows: minmax(.5rem, auto); row-gap: .25rem; }
+  .b { min-height: 1.65rem; }
+  .b.cont { min-height: .5rem; }   /* an earlier year of a long role: the band alone, so its row is only as tall as the band */
 }
 
 /* A bar. Classes f1..f12 = first month, t1..t12 = last month, r1..r12 = where
@@ -497,64 +515,29 @@ section > p { max-width: var(--prose); }
   .b:not(.short):not(.mark) { overflow: hidden; }
 }
 
-/* ---------- strip: one year row, small on the home page, large (.big) on the pages of their own ---------- */
+/* ---------- the stories: one row each, kind and year, title, the question it opens on ---------- */
 
-.strip { display: grid; row-gap: .1875rem; }
-.sr { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); align-items: center; }
-.sr > span { font-family: var(--sans); font-size: .75rem; line-height: 1; color: var(--muted); }
-.sr > div {
+.stories { margin-top: 1.25rem; border-bottom: 1px solid var(--rule); }
+.stories li {
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  height: .75rem;
-  background: linear-gradient(to right,
-    var(--winter) 0 16.667%,
-    var(--spring) 16.667% 41.667%,
-    var(--summer) 41.667% 66.667%,
-    var(--fall) 66.667% 91.667%,
-    var(--winter) 91.667% 100%);
+  grid-template-columns: 9.5rem minmax(0, 21rem) minmax(0, 1fr);
+  column-gap: 1.25rem;
+  align-items: baseline;
+  padding-block: .875rem;
+  border-top: 1px solid var(--rule);
 }
-.sb { grid-column: var(--f) / calc(var(--t) + 1); grid-row: 1; background: var(--ink); }
-.sb.mark {
-  grid-column: var(--f);
-  background: var(--ink);
-  width: .5rem; height: .5rem;
-  align-self: center;
-  border-radius: 50%;
+.stories .kind { font-family: var(--sans); font-size: .875rem; line-height: 1.5; color: var(--muted); }
+.stories h3 { font-size: 1.25rem; font-weight: 600; }
+.stories h3 a { padding-block: .25rem; }
+.stories p { max-width: 34rem; font-size: 1rem; line-height: 1.5; }
+@media (max-width: 59.99rem) {
+  .stories li { grid-template-columns: 9.5rem minmax(0, 1fr); }
+  .stories p { grid-column: 2; }
 }
-
-/* the large strip: month names above, then one 1.5rem track per year */
-.strip.big { margin-block: 2rem 2.5rem; row-gap: .25rem; }
-.strip.big .mo {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  margin-left: 3rem;
-  font-family: var(--sans);
-  line-height: 1.5;
+@media (max-width: 47.99rem) {
+  .stories li { grid-template-columns: minmax(0, 1fr); row-gap: .125rem; }
+  .stories p { grid-column: 1; }
 }
-.strip.big .mo span { font-size: .75rem; }
-@media (max-width: 47.99rem) {   /* one letter per month, from data-m */
-  .strip.big .mo span { font-size: 0; }
-  .strip.big .mo span::before { content: attr(data-m); font-size: .75rem; }
-}
-.strip.big .sr { grid-template-columns: 3rem minmax(0, 1fr); }
-.strip.big .sr + .sr { margin-top: .1875rem; }
-.strip.big .sr > span { font-size: .875rem; color: var(--ink); }
-.strip.big .sr > div { height: 1.5rem; }
-.strip.big .sb.mark { width: 1rem; height: 1rem; }
-
-/* ---------- the longer versions ---------- */
-
-.longer {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 2rem 1.75rem;
-  margin-top: 1.5rem;
-}
-.longer article { display: flex; flex-direction: column; gap: .75rem; }
-.longer h3 { font-size: 1.25rem; font-weight: 600; }
-.longer p { font-size: 1rem; line-height: 1.5; }
-@media (max-width: 59.99rem) { .longer { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 33.99rem) { .longer { grid-template-columns: 1fr; } }
 
 /* ---------- the record ---------- */
 
@@ -563,7 +546,7 @@ section > p { max-width: var(--prose); }
 .rec h3 { font-weight: 700; font-size: 1.25rem; line-height: 1.5; }
 .rec .entry {
   display: grid;
-  grid-template-columns: 9.5rem minmax(0, 1fr) 11rem;
+  grid-template-columns: 9.5rem minmax(0, 36rem) minmax(0, 1fr);
   column-gap: 1.25rem;
   padding-block: .1875rem;
   font-size: 1rem;
@@ -571,7 +554,6 @@ section > p { max-width: var(--prose); }
 }
 .when, .where { font-family: var(--sans); font-size: .875rem; color: var(--muted); }
 .what strong { font-weight: 700; }
-.where { text-align: right; }
 .rec .entry > * { overflow-wrap: anywhere; }
 @media (max-width: 47.99rem) {
   .rec .yrow { grid-template-columns: minmax(0, 1fr); }
@@ -583,7 +565,7 @@ section > p { max-width: var(--prose); }
   }
   .what { grid-area: what; }
   .when { grid-area: when; }
-  .where { grid-area: where; text-align: left; }
+  .where { grid-area: where; }
   .where { margin-left: 1em; }
 }
 
@@ -643,6 +625,7 @@ section > p { max-width: var(--prose); }
    float right and fill the space from 3.5rem past the column to the right edge. */
 
 .body { --col: min(var(--prose), 100%); display: flow-root; }
+.pagehead + .body { margin-top: 2.5rem; }
 @media (min-width: 62rem) { .body { --col: min(var(--prose), 58%); } }
 .body > * { max-width: var(--col); }
 .body h2 {
@@ -671,6 +654,7 @@ section > p { max-width: var(--prose); }
 .facts dd { margin: 0; font-size: 1rem; line-height: 1.35; }
 .facts + h2 { margin-top: 0; }
 .ph.side { min-height: 6rem; }
+.photo.logo img { max-width: 15rem; outline: 1px solid var(--rule); }
 @media (min-width: 62rem) {
   .side {
     float: right;

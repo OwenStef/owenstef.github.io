@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Job search system · Owen Stefanakos</title>
-<meta name="description" content="How Owen Stefanakos designed a job search system and built it with Claude Code: what it does, how it runs and what broke.">
+<meta name="description" content="How Owen Stefanakos designed a job search system and built it with Claude Code: what it does, how it runs and what I found once I used it every day.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#131312" media="(prefers-color-scheme: dark)">
@@ -12,7 +12,7 @@
 <link rel="canonical" href="https://owenstef.github.io/job-search-system/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Job search system · Owen Stefanakos">
-<meta property="og:description" content="How Owen Stefanakos designed a job search system and built it with Claude Code: what it does, how it runs and what broke.">
+<meta property="og:description" content="How Owen Stefanakos designed a job search system and built it with Claude Code: what it does, how it runs and what I found once I used it every day.">
 <meta property="og:url" content="https://owenstef.github.io/job-search-system/">
 <meta property="og:image" content="https://owenstef.github.io/img/card.png">
 <meta property="og:image:width" content="1200">
@@ -32,8 +32,8 @@
 <a class="name" href="../">Owen Stefanakos</a>
 <nav aria-label="Sections">
 <ul>
+<li><a href="../#stories">Stories</a></li>
 <li><a href="../#seasons">Seasons</a></li>
-<li><a href="../#longer">Longer versions</a></li>
 <li><a href="../#record">The record</a></li>
 <li><a href="../#contact">Contact</a></li>
 </ul>
@@ -44,17 +44,14 @@
 <article>
 <header class="pagehead">
 <h1>Job search system</h1>
-<p class="lede">The system I designed to run my job search, built with Claude Code.</p>
+<p class="lede">I wanted AI to take the busywork out of my job search. What I learned was to think through what the work really looks like.</p>
 <p class="meta">October 2026</p>
 </header>
-<div class="strip big" aria-hidden="true">
-<div class="mo"><span data-m="J">Jan</span><span data-m="F">Feb</span><span data-m="M">Mar</span><span data-m="A">Apr</span><span data-m="M">May</span><span data-m="J">Jun</span><span data-m="J">Jul</span><span data-m="A">Aug</span><span data-m="S">Sep</span><span data-m="O">Oct</span><span data-m="N">Nov</span><span data-m="D">Dec</span></div>
-<div class="sr"><span>2026</span><div><i class="sb f10 t10"></i></div></div>
-</div>
 
 <div class="body">
-<h2 id="the-problem">The problem</h2>
-<!-- DRAFT, OWEN: all the prose on this page is mine. Every fact was checked against the repo on 2026-11-16. -->
+<h2 id="what-i-wanted">What I wanted</h2>
+<!-- DRAFT, OWEN: "What I wanted" (first paragraph), "What I found" (before the list) and "What works" are your words from the session (2026-11-16), trimmed. The rest of the prose is mine; every fact in it was checked against the repo on 2026-11-16. -->
+<p>I wanted to use AI to make my job search more efficient. I knew I would spend hours on busywork, and I wanted to spend my time on what mattered: writing cover letters and talking to people, not scrolling through job boards and formatting resumes.</p>
 <p>A job search is three searches at once: a company doing work I care about, a role there I’d fit, and someone I know who works there. The best leads sit where all three meet. I wanted a system that looked for them every morning.</p>
 
 <h2 id="what-i-built">What I built</h2>
@@ -168,21 +165,29 @@
 </figure>
 
 <h2 id="how-it-runs">How it runs</h2>
-<p>Overnight, workflows fetch new postings and copy my tracker into the repo. In the morning, one Claude session runs the routine: it checks that the fetch worked, hands the bulk reading to cheaper helper models and scores what’s left. Then I open the Desk. Through the day, the inbox sweep runs every hour and pings my phone only for replies and interview mail.</p>
+<p>Overnight, workflows fetch new postings. In the morning, one Claude session runs a routine: it checks that the fetch worked, hands the bulk reading to cheaper helper models and scores what’s left. Then I open the Desk.</p>
 <p>Scripts do the jobs that have one right answer: fetching, filtering, checking, copying data and the week’s numbers. Models only make judgment calls, like scoring fit, summarizing and drafting. If a script can produce a number, a script produces it.</p>
 <p>One rule is fixed: it never sends, submits or posts anything for me. Emails are drafts and applications are prepared; I press the buttons. The only exceptions reach me alone: my daily news digest, alerts on my phone, and events it adds to my own calendar.</p>
 
-<h2 id="what-broke">What broke, and what I changed</h2>
+<h2 id="what-i-found">What I found</h2>
+<p>I overbuilt the workflow without improving my efficiency.</p>
+<p>I created a time-blocking system that never accurately ordered my priorities, and it ended up costing more time than it saved. The morning routine, while helpful, was prepping for interviews on jobs I hadn’t even looked at.</p>
+<p>What I learned was to think through what the work really looks like.</p>
+<p>Using it every day turned up three more problems the design didn’t show:</p>
 <ol>
 <li><strong>GitHub’s schedule dropped runs.</strong> From November 4, GitHub started only 3 or 4 of the 34 inbox sweeps scheduled each day. On November 10, the fetch started almost four hours after the morning routine. I wrote up an outside timer that asks GitHub to start the same workflows on time, and kept GitHub’s own schedule as a backup.</li>
 <li><strong>It cost too much.</strong> At first the morning routine ate about 60% of my weekly AI usage. Each run took 34 to 50 minutes on the most expensive model, with AI doing plumbing like copying sheet data. I moved the plumbing into scripts and gave each job to the cheapest model that does it well. The routine now takes 10 to 18 minutes on a cheaper model, with 6 to 13 helper runs.</li>
 <li><strong>Failures were silent.</strong> One day in October the fetch didn’t run because a test failed, and nothing caught it until the morning routine, hours later. An audit also found steps that had been skipped for days. Now the main workflows each record a heartbeat as proof they ran, and a health board rates the system red, amber or green. It pings my phone only for red.</li>
 </ol>
+
+<h2 id="what-works">What works</h2>
+<p>By far the most efficient part has been storing and retrieving my own information and processes. I have a master resume I can tailor to any role, with strict guidelines for the copy and formatting. I have the context around my decisions, so that as I think about my next steps, it continues with me.</p>
+<p>These tools have become more dynamic as I’ve fine-tuned my process. I now work with a powerful toolbox instead of fighting a system.</p>
 </div>
 </article>
 
 <nav class="next" aria-label="Next page">
-<p>Next: <a href="../fire-season/">A fire season</a></p>
+<p>Next: <a href="../kitchens/">Find the gap and fill it</a></p>
 <p><a href="../">Home</a></p>
 </nav>
 </main>
