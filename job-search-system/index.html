@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Job search system · Owen Stefanakos</title>
-<meta name="description" content="A job search system I designed and directed Claude Code to build: what it does, how it runs, and what broke.">
+<meta name="description" content="How Owen Stefanakos designed a job search system and built it with Claude Code: what it does, how it runs and what broke.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#131312" media="(prefers-color-scheme: dark)">
@@ -12,7 +12,7 @@
 <link rel="canonical" href="https://owenstef.github.io/job-search-system/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Job search system · Owen Stefanakos">
-<meta property="og:description" content="A job search system I designed and directed Claude Code to build: what it does, how it runs, and what broke.">
+<meta property="og:description" content="How Owen Stefanakos designed a job search system and built it with Claude Code: what it does, how it runs and what broke.">
 <meta property="og:url" content="https://owenstef.github.io/job-search-system/">
 <meta property="og:image" content="https://owenstef.github.io/img/card.png">
 <meta property="og:image:width" content="1200">
@@ -44,8 +44,8 @@
 <article>
 <header class="pagehead">
 <h1>Job search system</h1>
-<p class="lede">A job search system I designed and directed Claude Code to build.</p>
-<p class="meta">2026</p>
+<p class="lede">The system I designed to run my job search, built with Claude Code.</p>
+<p class="meta">October 2026</p>
 </header>
 <div class="strip big" aria-hidden="true">
 <div class="mo"><span data-m="J">Jan</span><span data-m="F">Feb</span><span data-m="M">Mar</span><span data-m="A">Apr</span><span data-m="M">May</span><span data-m="J">Jun</span><span data-m="J">Jul</span><span data-m="A">Aug</span><span data-m="S">Sep</span><span data-m="O">Oct</span><span data-m="N">Nov</span><span data-m="D">Dec</span></div>
@@ -54,18 +54,19 @@
 
 <div class="body">
 <h2 id="the-problem">The problem</h2>
-<p>A job search is really three searches at once: a company doing something I care about, a role there I actually fit, and someone I know who works there. Each one alone is easy. The overlap is what gets you an interview, and it’s the part I kept losing track of. I wanted it surfaced every morning without me hunting for it.</p>
+<!-- DRAFT, OWEN: all the prose on this page is mine. Every fact was checked against the repo on 2026-11-16. -->
+<p>A job search is three searches at once: a company doing work I care about, a role there I’d fit, and someone I know who works there. The best leads sit where all three meet. I wanted a system that looked for them every morning.</p>
 
 <h2 id="what-i-built">What I built</h2>
-<p>I’m not a software engineer. I designed this system and directed Claude Code to build it; I didn’t hand-write the code. My job was deciding what it should do, setting the rules, and checking that it worked.</p>
+<p>I’m not a software engineer, and I didn’t write the code. I designed the system and directed Claude Code to build it. My part was deciding what it should do and checking that it did.</p>
 <p>It has four parts:</p>
 <ul>
-<li><strong>Fetchers and an inbox sweep.</strong> Scheduled jobs on GitHub Actions pull postings from company job boards and file my email. No AI involved, so they’re cheap and predictable.</li>
-<li><strong>Triage.</strong> A cheap model reads each new posting against a plain-English file of what I want and a written scoring rubric. Obvious mismatches, like roles asking for 3+ years, get dropped by plain rules before any model sees them.</li>
-<li><strong>One activity record.</strong> Everything I do (a message, a call, an application) is one new line in an append-only log. Statuses and reminders are worked out from it, so nothing gets lost by overwriting.</li>
-<li><strong>The Desk.</strong> One web page that is my whole interface: best-fit roles and who could refer me, what needs me today, and a page per company.</li>
+<li><strong>Fetchers and an inbox sweep.</strong> Scheduled jobs on GitHub Actions pull postings from job boards and company career pages, and file my email. They use no AI, so they’re cheap and predictable.</li>
+<li><strong>Triage.</strong> Plain rules drop the obvious misfits first, like roles asking for 3+ years. Then cheap AI models read what’s left against a plain-English file of what I want and a written scoring rubric.</li>
+<li><strong>One activity record.</strong> Everything I do, from a message to an application, adds one line to a log that only grows. Statuses and reminders are worked out from it, so nothing is lost to an overwrite.</li>
+<li><strong>The Desk.</strong> One web page, and the only screen I use for the search: the best-fit roles and who could refer me, what needs me today, and a page for each company.</li>
 </ul>
-<p>In all: 48 scripts, 9 scheduled workflows, 8 AI helper roles and 10 saved routines.</p>
+<p>By mid-November 2026 it ran on 49 scripts, 9 workflows on GitHub Actions, 8 helper agents and 11 saved routines.</p>
 
 <figure class="wide">
 <svg class="diagram diagram-wide" viewBox="29 0 702 250" role="img" aria-label="Scripts do the plumbing and one cheap model step does the scoring. Sources feed scripts, then triage, then the activity log, then the Desk; every tap on the Desk adds a row to the log.">
@@ -167,15 +168,15 @@
 </figure>
 
 <h2 id="how-it-runs">How it runs</h2>
-<p>Overnight, workflows fetch new postings and copy my tracker into the repo. Each morning one Claude session runs the routine: it checks the fetch worked, hands the bulk reading to cheaper helper models, and scores what’s left. Through the day the inbox sweep runs hourly and pings my phone only for replies and interview mail. Then I open the Desk.</p>
-<p>The split matters. Fetching, filtering, validating, mirroring and the week’s numbers are plain scripts. Models only do judgment work: scoring fit, summarizing, drafting. If a script can produce a number, a script produces it.</p>
-<p>One hard rule: it never sends, submits or posts anything for me. Emails are drafts, applications are prepared, and I press the buttons. The only exceptions go to me alone: my daily news digest, phone alerts, and calendar blocks it made itself.</p>
+<p>Overnight, workflows fetch new postings and copy my tracker into the repo. In the morning, one Claude session runs the routine: it checks that the fetch worked, hands the bulk reading to cheaper helper models and scores what’s left. Then I open the Desk. Through the day, the inbox sweep runs every hour and pings my phone only for replies and interview mail.</p>
+<p>Scripts do the jobs that have one right answer: fetching, filtering, checking, copying data and the week’s numbers. Models only make judgment calls, like scoring fit, summarizing and drafting. If a script can produce a number, a script produces it.</p>
+<p>One rule is fixed: it never sends, submits or posts anything for me. Emails are drafts and applications are prepared; I press the buttons. The only exceptions reach me alone: my daily news digest, alerts on my phone, and events it adds to my own calendar.</p>
 
 <h2 id="what-broke">What broke, and what I changed</h2>
 <ol>
-<li><strong>GitHub’s schedule dropped runs.</strong> Since November 4 it delivered only 3 or 4 of the 34 hourly inbox runs a day, and on November 10 the fetch started four hours after the morning routine. I wrote up an outside timer that calls GitHub to start the same workflows on time, and kept the built-in schedules as a backup.</li>
-<li><strong>It cost too much.</strong> Early on the morning routine used about 60% of my weekly AI usage: a 34 to 50 minute session on the most expensive model, with models doing plumbing like copying sheet data. I moved the plumbing into scripts and switched to the cheapest models that do each job well. Recent runs take 10 to 22 minutes with 4 to 6 helper runs.</li>
-<li><strong>Failures were silent.</strong> An October audit found the fetch hadn’t run (a test failed) and only the morning routine noticed, two hours later. Some steps had also been skipped for days. Now every workflow records a heartbeat as proof it ran, and a health board rates the system red, amber or green and pushes to my phone only on red.</li>
+<li><strong>GitHub’s schedule dropped runs.</strong> From November 4, GitHub started only 3 or 4 of the 34 inbox sweeps scheduled each day. On November 10, the fetch started almost four hours after the morning routine. I wrote up an outside timer that asks GitHub to start the same workflows on time, and kept GitHub’s own schedule as a backup.</li>
+<li><strong>It cost too much.</strong> At first the morning routine ate about 60% of my weekly AI usage. Each run took 34 to 50 minutes on the most expensive model, with AI doing plumbing like copying sheet data. I moved the plumbing into scripts and gave each job to the cheapest model that does it well. The routine now takes 10 to 18 minutes on a cheaper model, with 6 to 13 helper runs.</li>
+<li><strong>Failures were silent.</strong> One day in October the fetch didn’t run because a test failed, and nothing caught it until the morning routine, hours later. An audit also found steps that had been skipped for days. Now the main workflows each record a heartbeat as proof they ran, and a health board rates the system red, amber or green. It pings my phone only for red.</li>
 </ol>
 </div>
 </article>
@@ -189,7 +190,7 @@
 <footer class="wrap">
 <div class="foot">
 <p>Owen Stefanakos, San Francisco.</p>
-<p>Set in Besley and Archivo. Plain HTML and CSS; no tracking. Updated November 2026.</p>
+<p>Set in Besley and Archivo. Plain HTML and CSS, and nothing here tracks you. Updated November 2026.</p>
 </div>
 </footer>
 </body>
