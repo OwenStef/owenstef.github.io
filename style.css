@@ -290,19 +290,19 @@ section > p { max-width: var(--prose); }
 .key {
   margin-top: .75rem;
   font-family: var(--sans);
-  font-size: .875rem;
+  font-size: .75rem;
   color: var(--muted);
   max-width: none;
   display: flex;
   flex-wrap: wrap;
-  gap: .25rem 1.25rem;
+  gap: .25rem .5rem;
 }
 .key span { display: inline-flex; align-items: baseline; }
 .key i {
   display: inline-block;
-  width: 1.5rem;
+  width: 1rem;
   height: .5rem;
-  margin-right: .375rem;
+  margin-right: .25rem;
   flex: none;
   background: var(--ink);
 }
@@ -453,6 +453,9 @@ section > p { max-width: var(--prose); }
 .what strong { font-weight: 700; }
 .rec .entry > * { overflow-wrap: break-word; }   /* not "anywhere": that lets a column shrink to one letter */
 .when { white-space: nowrap; }
+/* the fold for the oldest years: its summary is set like a year heading */
+.earlier summary { font-weight: 700; font-size: 1.25rem; line-height: 1.5; min-height: 2.75rem; padding-block: .4375rem; cursor: pointer; }
+.earlier .yrow { margin-top: 1.75rem; }
 @media (max-width: 47.99rem) {
   .rec .yrow { grid-template-columns: minmax(0, 1fr); }
   .rec .entry {
@@ -467,8 +470,8 @@ section > p { max-width: var(--prose); }
   .where { margin-left: 1em; }
 }
 
-.passion ul { margin-top: 1rem; max-width: var(--prose); display: grid; gap: 0; border-bottom: 1px solid var(--rule); border-left: 8px solid var(--hl); }
-.passion li { padding: .75rem 0 .75rem 1rem; border-top: 1px solid var(--rule); }
+.passion ul { margin-top: 1rem; max-width: var(--prose); display: grid; gap: 0; }
+.passion li { padding-block: .1875rem; font-size: 1rem; line-height: 1.5; }   /* the type, size and spacing of a Record entry's .what */
 .small { margin-top: 2.5rem; }
 .small p { max-width: var(--prose); }
 
@@ -573,17 +576,6 @@ figcaption {
   color: var(--muted);
 }
 .body > figure.wide { max-width: none; clear: both; margin: 2rem 0; }   /* the whole width: column and margin */
-.body > figure.narrow { max-width: 20rem; margin: 2rem 0; }
-.shot picture { display: block; }
-.shot img {
-  display: block;
-  width: 100%;
-  max-width: 56.25rem;
-  height: auto;
-  outline: 1px solid var(--muted);
-}
-figure.narrow .shot img { max-width: 20rem; }
-@media (max-width: 760px) { .shot img { max-width: 24.375rem; } figure.narrow .shot img { max-width: 20rem; } }
 
 /* the diagram: boxes outlined in ink, the one highlighted box in the highlighter yellow */
 .diagram { display: block; width: 100%; height: auto; }
@@ -604,3 +596,6 @@ figure.narrow .shot img { max-width: 20rem; }
 .next { clear: both; max-width: var(--prose); margin-top: 3rem; }
 .next p { display: flex; align-items: center; gap: .3em; min-height: 2.75rem; }
 .next a { display: inline-flex; align-items: center; min-height: 2.75rem; }
+
+/* phones: the timeline needs sideways scrolling, so it and its nav link are left out; the Record carries the same lines */
+@media (max-width: 47.99rem) { #seasons, .nav-seasons { display: none; } }

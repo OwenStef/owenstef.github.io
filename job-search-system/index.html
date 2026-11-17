@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Building my job search with AI · Owen Stefanakos</title>
-<meta name="description" content="How Owen Stefanakos designed a job search system and built it with Claude Code: what it does, how it runs and what I found once I used it every day.">
+<meta name="description" content="How I designed a job search system and built it with Claude Code: what it does, how it runs and what I found once I used it every day.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#131312" media="(prefers-color-scheme: dark)">
@@ -12,12 +12,12 @@
 <link rel="canonical" href="https://owenstef.github.io/job-search-system/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Building my job search with AI · Owen Stefanakos">
-<meta property="og:description" content="How Owen Stefanakos designed a job search system and built it with Claude Code: what it does, how it runs and what I found once I used it every day.">
+<meta property="og:description" content="How I designed a job search system and built it with Claude Code: what it does, how it runs and what I found once I used it every day.">
 <meta property="og:url" content="https://owenstef.github.io/job-search-system/">
-<meta property="og:image" content="https://owenstef.github.io/img/card.png">
+<meta property="og:image" content="https://owenstef.github.io/img/preview.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Owen Stefanakos">
+<meta property="og:image:alt" content="Owen Stefanakos written in large type on a white card, with one line about him beneath and his portrait photograph on the right.">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="../img/favicon.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
@@ -33,8 +33,8 @@
 <nav aria-label="Sections">
 <ul>
 <li><a href="../#stories">Stories</a></li>
-<li><a href="../#seasons">Seasons</a></li>
-<li><a href="../#record">The record</a></li>
+<li class="nav-seasons"><a href="../#seasons">Seasons</a></li>
+<li><a href="../#record">Record</a></li>
 <li><a href="../#contact">Contact</a></li>
 </ul>
 </nav>
@@ -46,11 +46,25 @@
 <h1>Building my job search with AI</h1>
 <!-- OWEN: the home-page title and your line, used here too at your OK, 2026-11-17. -->
 <p class="lede">I wanted to work more efficiently. What I learned was to think through what the work really looks like first.</p>
-<p class="meta">October 2026</p>
+<p class="meta">October – November 2026</p>
 </header>
 
 <div class="body">
 <!-- OWEN: the five section headers were drafted from your sentences on this page and approved by you on 2026-11-17. -->
+<h2 id="what-i-found">I overbuilt it</h2>
+<p>I overbuilt the workflow without improving my efficiency.</p>
+<p>I created a time-blocking system that never accurately ordered my priorities, and it ended up costing more time than it saved. The morning routine, while helpful, was prepping for interviews on jobs I hadn’t even looked at.</p>
+<p>What I learned was to think through what the work really looks like.</p>
+<p>Using it every day turned up three more problems the design didn’t show:</p>
+<ol>
+<li><strong>GitHub’s schedule dropped runs.</strong> From November 4, GitHub started only 3 or 4 of the 34 inbox sweeps scheduled each day. On November 10, the fetch started almost four hours after the morning routine. I wrote up an outside timer that asks GitHub to start the same workflows on time, and kept GitHub’s own schedule as a backup.</li>
+<li><strong>It cost too much.</strong> At first the morning routine ate about 60% of my weekly AI usage. Each run took 34 to 50 minutes on the most expensive model, with AI doing plumbing like copying sheet data. I moved the plumbing into scripts and gave each job to the cheapest model that does it well. The routine now takes 10 to 18 minutes on a cheaper model, with 6 to 13 helper runs.</li>
+<li><strong>Failures were silent.</strong> One day in October the fetch didn’t run because a test failed, and nothing caught it until the morning routine, hours later. An audit also found steps that had been skipped for days. Now the main workflows each record a heartbeat as proof they ran, and a health board rates the system red, amber or green. It pings my phone only for red.</li>
+</ol>
+
+<h2 id="what-works">Now it’s a toolbox</h2>
+<p>By far the most efficient part has been storing and retrieving my own information and processes. I have a master resume I can tailor to any role, with strict guidelines for the copy and formatting. I have the context around my decisions, so that as I think about my next steps, it continues with me.</p>
+<p>These tools have become more dynamic as I’ve fine-tuned my process. I now work with a powerful toolbox instead of fighting a system.</p>
 <h2 id="what-i-wanted">Less busywork, more people</h2>
 <!-- DRAFT, OWEN: "What I wanted" (first paragraph), "What I found" (before the list) and "What works" are your words from the session (2026-11-16), trimmed. The rest of the prose is mine; every fact in it was checked against the repo on 2026-11-16. -->
 <p>I wanted to use AI to make my job search more efficient. I knew I would spend hours on busywork, and I wanted to spend my time on what mattered: writing cover letters and talking to people, not scrolling through job boards and formatting resumes.</p>
@@ -65,8 +79,6 @@
 <li><strong>One activity record.</strong> Everything I do, from a message to an application, adds one line to a log that only grows. Statuses and reminders are worked out from it, so nothing is lost to an overwrite.</li>
 <li><strong>The Desk.</strong> One web page, and the only screen I use for the search: the best-fit roles and who could refer me, what needs me today, and a page for each company.</li>
 </ul>
-<p>By mid-November 2026 it ran on 49 scripts, 9 workflows on GitHub Actions, 8 helper agents and 11 saved routines.</p>
-
 <figure class="wide">
 <svg class="diagram diagram-wide" viewBox="29 0 702 250" role="img" aria-label="Scripts do the plumbing and one cheap model step does the scoring. Sources feed scripts, then triage, then the activity log, then the Desk; every tap on the Desk adds a row to the log.">
 <text class="lbl" x="30" y="22" font-size="19">Scripts do the plumbing; one cheap model step does the scoring</text>
@@ -117,53 +129,7 @@
 <path class="rule" d="M10 452H330"/>
 <text x="10" y="474" font-size="15.5">Rule: nothing is sent or submitted for me.</text><text x="10" y="493" font-size="15.5">Everything outgoing is a draft.</text>
 </svg>
-<figcaption>Postings flow left to right; everything I do on the Desk is written back to the log, which is what the Desk reads.</figcaption>
-</figure>
-
-<figure class="wide">
-<div class="shot">
-<picture>
-<source media="(max-width: 760px) and (prefers-color-scheme: dark)" srcset="../img/home-phone-dark.webp 1x, ../img/home-phone-dark@2x.webp 2x" width="390" height="831">
-<source media="(max-width: 760px)" srcset="../img/home-phone-light.webp 1x, ../img/home-phone-light@2x.webp 2x" width="390" height="831">
-<source media="(prefers-color-scheme: dark)" srcset="../img/home-dark.webp 1x, ../img/home-dark@2x.webp 2x" width="900" height="862">
-<img src="../img/home-light.webp" srcset="../img/home-light.webp 1x, ../img/home-light@2x.webp 2x" alt="The Desk home page: a count line, the week’s progress, an apply queue and what needs attention today." loading="lazy" decoding="async" width="900" height="862">
-</picture>
-</div>
-<figcaption>The Desk’s home page. The data in these screenshots is made up.</figcaption>
-</figure>
-
-<figure class="wide">
-<div class="shot">
-<picture>
-<source media="(max-width: 760px) and (prefers-color-scheme: dark)" srcset="../img/fits-phone-dark.webp 1x, ../img/fits-phone-dark@2x.webp 2x" width="390" height="597">
-<source media="(max-width: 760px)" srcset="../img/fits-phone-light.webp 1x, ../img/fits-phone-light@2x.webp 2x" width="390" height="597">
-<source media="(prefers-color-scheme: dark)" srcset="../img/fits-dark.webp 1x, ../img/fits-dark@2x.webp 2x" width="900" height="578">
-<img src="../img/fits-light.webp" srcset="../img/fits-light.webp 1x, ../img/fits-light@2x.webp 2x" alt="The Best fits list on the Desk, each role with why it ranks and who could refer me." loading="lazy" decoding="async" width="900" height="578">
-</picture>
-</div>
-<figcaption>Best fits, with who could refer me.</figcaption>
-</figure>
-
-<figure class="wide">
-<div class="shot">
-<picture>
-<source media="(max-width: 760px) and (prefers-color-scheme: dark)" srcset="../img/company-phone-dark.webp 1x, ../img/company-phone-dark@2x.webp 2x" width="390" height="983">
-<source media="(max-width: 760px)" srcset="../img/company-phone-light.webp 1x, ../img/company-phone-light@2x.webp 2x" width="390" height="983">
-<source media="(prefers-color-scheme: dark)" srcset="../img/company-dark.webp 1x, ../img/company-dark@2x.webp 2x" width="900" height="679">
-<img src="../img/company-light.webp" srcset="../img/company-light.webp 1x, ../img/company-light@2x.webp 2x" alt="A company page on the Desk." loading="lazy" decoding="async" width="900" height="679">
-</picture>
-</div>
-<figcaption>A company page.</figcaption>
-</figure>
-
-<figure class="narrow">
-<div class="shot">
-<picture>
-<source media="(prefers-color-scheme: dark)" srcset="../img/home-phone-dark.webp 1x, ../img/home-phone-dark@2x.webp 2x" width="390" height="831">
-<img src="../img/home-phone-light.webp" srcset="../img/home-phone-light.webp 1x, ../img/home-phone-light@2x.webp 2x" alt="The Desk home page on a phone." loading="lazy" decoding="async" width="390" height="831">
-</picture>
-</div>
-<figcaption>The same page on a phone.</figcaption>
+<figcaption>Everything I do on the Desk is written back to the log, which is what the Desk reads.</figcaption>
 </figure>
 
 <h2 id="how-it-runs">Scripts for facts, models for judgment</h2>
@@ -171,20 +137,6 @@
 <p>Scripts do the jobs that have one right answer: fetching, filtering, checking, copying data and the week’s numbers. Models only make judgment calls, like scoring fit, summarizing and drafting. If a script can produce a number, a script produces it.</p>
 <p>One rule is fixed: it never sends, submits or posts anything for me. Emails are drafts and applications are prepared; I press the buttons. The only exceptions reach me alone: my daily news digest, alerts on my phone, and events it adds to my own calendar.</p>
 
-<h2 id="what-i-found">I overbuilt it</h2>
-<p>I overbuilt the workflow without improving my efficiency.</p>
-<p>I created a time-blocking system that never accurately ordered my priorities, and it ended up costing more time than it saved. The morning routine, while helpful, was prepping for interviews on jobs I hadn’t even looked at.</p>
-<p>What I learned was to think through what the work really looks like.</p>
-<p>Using it every day turned up three more problems the design didn’t show:</p>
-<ol>
-<li><strong>GitHub’s schedule dropped runs.</strong> From November 4, GitHub started only 3 or 4 of the 34 inbox sweeps scheduled each day. On November 10, the fetch started almost four hours after the morning routine. I wrote up an outside timer that asks GitHub to start the same workflows on time, and kept GitHub’s own schedule as a backup.</li>
-<li><strong>It cost too much.</strong> At first the morning routine ate about 60% of my weekly AI usage. Each run took 34 to 50 minutes on the most expensive model, with AI doing plumbing like copying sheet data. I moved the plumbing into scripts and gave each job to the cheapest model that does it well. The routine now takes 10 to 18 minutes on a cheaper model, with 6 to 13 helper runs.</li>
-<li><strong>Failures were silent.</strong> One day in October the fetch didn’t run because a test failed, and nothing caught it until the morning routine, hours later. An audit also found steps that had been skipped for days. Now the main workflows each record a heartbeat as proof they ran, and a health board rates the system red, amber or green. It pings my phone only for red.</li>
-</ol>
-
-<h2 id="what-works">Now it’s a toolbox</h2>
-<p>By far the most efficient part has been storing and retrieving my own information and processes. I have a master resume I can tailor to any role, with strict guidelines for the copy and formatting. I have the context around my decisions, so that as I think about my next steps, it continues with me.</p>
-<p>These tools have become more dynamic as I’ve fine-tuned my process. I now work with a powerful toolbox instead of fighting a system.</p>
 </div>
 </article>
 
