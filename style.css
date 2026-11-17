@@ -224,8 +224,8 @@ section > p { max-width: var(--prose); }
   font-size: clamp(1.1875rem, 1rem + .9vw, 1.5rem);
   line-height: 1.4;
 }
-.now { grid-column: 1 / 9; max-width: var(--prose); margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--rule); }
-.now b { display: block; margin-bottom: .25rem; font-family: var(--sans); font-size: .875rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.now { grid-column: 1 / 9; max-width: var(--prose); margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--rule); }
+.now b { display: table; margin-bottom: .75rem; padding: .125rem .5rem; background: var(--hl); color: #1a1a1a; font-family: var(--sans); font-size: .875rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 
 /* Portrait slot and the three contact lines, bottom-aligned with the text. */
 .mast-side {
@@ -467,8 +467,8 @@ section > p { max-width: var(--prose); }
   .where { margin-left: 1em; }
 }
 
-.passion ul { margin-top: 1rem; max-width: var(--prose); display: grid; gap: 0; border-bottom: 1px solid var(--rule); }
-.passion li { padding: .75rem 0 .75rem 1rem; border-top: 1px solid var(--rule); border-left: 4px solid var(--hl); }
+.passion ul { margin-top: 1rem; max-width: var(--prose); display: grid; gap: 0; border-bottom: 1px solid var(--rule); border-left: 8px solid var(--hl); }
+.passion li { padding: .75rem 0 .75rem 1rem; border-top: 1px solid var(--rule); }
 .small { margin-top: 2.5rem; }
 .small p { max-width: var(--prose); }
 
