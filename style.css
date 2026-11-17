@@ -8,11 +8,11 @@
   --paper: #ffffff;     /* page background */
   --ink: #161614;       /* text, bars, lines */
   --muted: #5c5b55;     /* small print: dates, places, captions */
-  --winter: #e8eff5;    /* the four season fields behind the chart: pale, so the bars are what you see */
+  --winter: #e8eff5;    /* the four season tints behind the timeline: pale, so the bars are what you see */
   --spring: #e9f1da;
   --summer: #fff1b3;
   --fall: #f9decb;
-  --winter-b: #9dbdd3;  /* the same four at full strength: only the thin band along the top of the chart */
+  --winter-b: #9dbdd3;  /* the same four at full strength: only the thin band along the top of the timeline */
   --spring-b: #a5c77a;
   --summer-b: #ffd42e;
   --fall-b: #ed9c68;
@@ -25,10 +25,8 @@
   --prose: 38rem;       /* longest a line of reading text gets */
   --gap: clamp(3.5rem, 8vw, 6rem);   /* space between sections */
   --side: clamp(1.125rem, 4vw, 3rem);
-  --yc: 3.75rem;          /* width of the year column in the chart */
   color-scheme: light dark;
 }
-@media (min-width: 60rem) { :root { --yc: 4.5rem; } }
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -200,7 +198,8 @@ section > p { max-width: var(--prose); }
 @media (max-width: 30rem) {
   .top nav { flex-basis: 100%; }
   .top ul { justify-content: flex-start; column-gap: 0; margin-inline: -.5rem; }
-  .top ul a { padding-inline: .4rem; }
+  .top ul { font-size: .875rem; }
+  .top ul a { padding-inline: .3rem; }
 }
 
 /* ---------- masthead ---------- */
@@ -282,10 +281,14 @@ section > p { max-width: var(--prose); }
 @media (max-width: 47.99rem) { .ph { padding: .375rem; } }
 .photo img { width: 100%; height: auto; display: block; }
 
-/* ---------- the chart ---------- */
+/* ---------- the timeline ----------
+   One horizontal axis, January 2016 to December 2026, that scrolls sideways
+   inside .tl. 132 month columns of --mw each. A bar's class says where it goes:
+   y16..y26 + f1..f12 = the year and first month, e16..e26 + t1..t12 = the year
+   (omit when the same) and last month, l1..l5 = the lane (row). */
 
 .key {
-  margin-top: 1rem;
+  margin-top: .75rem;
   font-family: var(--sans);
   font-size: .875rem;
   color: var(--muted);
@@ -298,221 +301,111 @@ section > p { max-width: var(--prose); }
 .key i {
   display: inline-block;
   width: 1.5rem;
-  height: .75rem;
+  height: .5rem;
   margin-right: .375rem;
   flex: none;
   background: var(--ink);
 }
-/* the second swatch is a small bracket, like a role in the chart */
-/* the led swatch is a thin solid band along the bottom, like a led bar in the chart */
-.key i.l { height: .3125rem; }
+/* the led swatch is a thin band, the role swatch a small bracket, like the bars */
+.key i.l { height: .25rem; }
 .key i.o { height: .5rem; background: none; border: 2px solid var(--ink); border-top: 0; }
+.key i.s { height: .75rem; background: var(--c); border: 1px solid var(--rule); }
+.key .cue { color: var(--ink); }
 
-
-.chart {
-  position: relative;
-  margin-top: 1rem;
+.tl {
+  --yw: 14rem;                 /* one year */
+  --mw: calc(var(--yw) / 12);  /* one month */
+  --lane: 1.5rem;
+  margin-top: .75rem;
   font-family: var(--sans);
-  background: var(--paper);
+  direction: rtl;              /* a scroller that opens at its right (recent) end with no script; the content below is ltr again */
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--muted) var(--rule);
 }
-/* The four season fields, painted once behind everything: one gradient
-   across the twelve month columns (Jan-Feb, Mar-May, Jun-Aug, Sep-Nov, Dec). */
-.chart::before {
-  content: "";
-  position: absolute;
-  top: 0; bottom: 0; right: 0;
-  left: var(--yc);
-  background:
-    linear-gradient(to right,
-      var(--winter-b) 0 16.667%,
-      var(--spring-b) 16.667% 41.667%,
-      var(--summer-b) 41.667% 66.667%,
-      var(--fall-b) 66.667% 91.667%,
-      var(--winter-b) 91.667% 100%) top / 100% .3125rem no-repeat,
+.tl-in {
+  direction: ltr;
+  display: grid;
+  grid-template-columns: repeat(132, var(--mw));
+  grid-template-rows: 1.75rem repeat(6, var(--lane));
+  width: max-content;
+  padding: 0 0 .375rem 0;      /* the tints run to the end of December 2026; the last labels (.back) read leftward so none runs past it */
+  background-clip: content-box;
+  background-origin: content-box;
+  background-repeat: repeat-x;
+  background-size: var(--yw) 100%, var(--yw) 100%, var(--yw) .3125rem;
+  background-image:
+    linear-gradient(to right, var(--rule) 0 1px, transparent 1px),
     linear-gradient(to right,
       var(--winter) 0 16.667%,
       var(--spring) 16.667% 41.667%,
       var(--summer) 41.667% 66.667%,
       var(--fall) 66.667% 91.667%,
-      var(--winter) 91.667% 100%);
+      var(--winter) 91.667% 100%),
+    linear-gradient(to right,
+      var(--winter-b) 0 16.667%,
+      var(--spring-b) 16.667% 41.667%,
+      var(--summer-b) 41.667% 66.667%,
+      var(--fall-b) 66.667% 91.667%,
+      var(--winter-b) 91.667% 100%);
 }
-.chart > * { position: relative; }
+.tl-in > ol { display: contents; }
 
-/* Header: season names, then month names, on the same twelve columns. */
-.hd {
-  display: grid;
-  grid-template-columns: var(--yc) repeat(12, minmax(0, 1fr));
-  padding-top: .75rem;
-}
-.hd ol { display: contents; }
-.hd .seasons li {
-  font-weight: 600;
-  font-size: .875rem;
-  line-height: 1.5;
-  padding-left: .375rem;
-  white-space: nowrap;
-}
-.hd .months li {
-  font-size: 0;                  /* narrow screens: one letter, from data-m */
-  line-height: 1.5;
-  padding-left: .375rem;
-  padding-bottom: .125rem;
-}
-.hd .months li::before { content: attr(data-m); font-size: .75rem; }
-.s-w  { grid-column: 2 / 4; }
-.s-sp { grid-column: 4 / 7; }
-.s-su { grid-column: 7 / 10; }
-.s-f  { grid-column: 10 / 13; }
-.hd .months li:first-child { grid-column: 2; }
-@media (min-width: 60rem) {
-  .hd .months li { font-size: .75rem; }
-  .hd .months li::before { content: none; }
-}
-@media (max-width: 29.99rem) { .hd .seasons { display: none; } }
-@media (max-width: 15rem) {   /* only at extreme zoom */
-  .hd .months { display: none; }
-  .top ul { margin-inline: 0; }
-  .top ul a { padding-inline: .1rem; }
-  .mast { grid-template-columns: minmax(0, 1fr) 3rem; }
-  .mast-side .portrait { width: 3rem; }
-}
-@media (max-width: 59.99rem) { .hd .seasons li { font-size: .75rem; padding-left: .25rem; } .hd .months li { padding-left: .25rem; } }
-
-/* One year: numeral on the paper, then twelve month columns of bars. */
-.yr {
-  display: grid;
-  grid-template-columns: var(--yc) minmax(0, 1fr);
-  border-top: 3px solid var(--paper);
-}
-.y {
-  align-self: stretch;
-  padding-top: .375rem;
-  background: var(--paper);
+/* Year numerals along the top, each at its January. */
+.yl {
+  grid-row: 1;
+  grid-column: calc(var(--y) * 12 + 1) / span 12;
+  padding: .5rem 0 0 .375rem;
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: 1rem;
   line-height: 1;
 }
-@media (min-width: 60rem) { .y { line-height: 1.65rem; } }
-.hd + .yr { border-top-width: 3px; }
-.yr ol {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  grid-auto-rows: .5rem;
-  grid-auto-flow: row dense;
-  row-gap: .1875rem;
-  padding-block: .375rem;
-}
-@media (min-width: 60rem) {
-  .yr ol { grid-auto-rows: minmax(.5rem, auto); row-gap: .25rem; }
-  .b { min-height: 1.65rem; }
-  .b.cont { min-height: .5rem; }   /* an earlier year of a long role: the band alone, so its row is only as tall as the band */
-}
 
-/* A bar. Classes f1..f12 = first month, t1..t12 = last month, r1..r12 = where
-   the room for a label ends (short bars and marks only). */
+/* A bar: the line sits at the foot of its lane, the label above it. */
 .b {
+  --e: var(--y);
   position: relative;
-  grid-column: var(--f) / calc(var(--t) + 1);
-  display: flex;
-  align-items: center;
+  grid-column: calc(var(--y) * 12 + var(--f)) / calc(var(--e) * 12 + var(--t) + 1);
   min-width: 0;
+  color: var(--ink);
 }
-.job { background: var(--ink); color: var(--paper); margin-inline: 1px; }   /* 1px in at each end: neighbours never touch */
-/* A role is a bracket: a 2px line along the bottom with a tick at each end. */
-.role { color: var(--ink); align-items: flex-end; }
-.role:not(.short)::after {
-  content: "";
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: .4rem;
-  border: 2px solid var(--ink);
-  border-top: 0;
-}
-.role .lb { padding: 0 .375rem calc(.3rem + 2px); }
-/* A led bar (something Owen ran) is a thin solid band along the bottom, 1px in at each end like a job; the label sits above it. */
-.led { color: var(--ink); align-items: flex-end; }
-.led:not(.short)::after {
-  content: "";
-  position: absolute;
-  left: 1px; right: 1px; bottom: 0;
-  height: .5rem;
-  background: var(--ink);
-}
-.led .lb { padding: 0 .375rem .625rem; }
+.b::after { content: ""; position: absolute; left: 1px; right: 1px; bottom: 0; }
+.job::after { height: .5rem; background: var(--ink); }                 /* paid work or a business: solid */
+.led::after { height: .25rem; background: var(--ink); }                /* a role held a year or more: thin band */
+.role::after { left: 0; right: 0; height: .4rem; border: 2px solid var(--ink); border-top: 0; }   /* school, boards, terms abroad: bracket */
+.mark { --t: var(--f); }
+.mark::after { width: .5rem; height: .5rem; right: auto; border-radius: 50%; background: var(--ink); }   /* a single date: a dot */
 .lb {
-  font-size: clamp(.71875rem, .5rem + .4vw, .8125rem);   /* a little smaller near 960px so labels fit */
+  position: absolute;
+  left: 0;
+  bottom: .675rem;
+  font-size: .8125rem;
   font-stretch: 88%;
   line-height: 1;
   white-space: nowrap;
-  padding-inline: .5rem;
 }
+.mark .lb { left: .75rem; bottom: .0625rem; }
+.back .lb { left: auto; right: 0; text-align: right; }                 /* a label that would run past the end of 2026 reads leftward from its bar */
+.mark.back .lb { right: calc(100% + .25rem); }
 .lb b { font-weight: 600; }
 .lb span { font-weight: 400; margin-left: .25rem; }
 
-/* Short bar: too short for its label, so the label sits to the right, on the
-   field. The li spans the extra room; ::before draws the bar over f..t only. */
-.b.short, .b.mark { grid-column: var(--f) / calc(var(--r) + 1); background: none; border: 0; color: var(--ink); }
-.b.short::before, .b.mark::before {
-  content: "";
-  flex: none;
-  align-self: stretch;
-  background: var(--ink);
-}
-.short::before {
-  width: calc(100% * (var(--t) - var(--f) + 1) / (var(--r) - var(--f) + 1) - 2px);
-  margin-inline: 1px;
-}
-.short.led::before { align-self: flex-end; height: .5rem; }
-.short.role::before {
-  align-self: flex-end;
-  height: .4rem;
-  margin: 0;
-  width: calc(100% * (var(--t) - var(--f) + 1) / (var(--r) - var(--f) + 1));
-  background: none;
-  border: 2px solid var(--ink);
-  border-top: 0;
-}
-.short .lb, .mark .lb { padding-inline: .5rem 0; }
-.short.role .lb { padding: 0 0 calc(.3rem + 2px) .5rem; }
-.short.led .lb { padding: 0 0 .625rem .5rem; }
-/* if a label is wider than its room (very large text), it wraps instead of sticking out */
-.short .lb, .mark .lb { white-space: normal; min-width: 0; }
-/* Mark: a single event, a dot at the start of the month and a label after it. */
-.b.mark::before {
-  width: .5rem;
-  height: .5rem;
-  align-self: center;
-  border-radius: 50%;
-}
-
-/* Month and bar positions. */
+.l1 { grid-row: 2; } .l2 { grid-row: 3; } .l3 { grid-row: 4; } .l4 { grid-row: 5; } .l5 { grid-row: 6; } .l6 { grid-row: 7; }
+.y16{--y:0}.y17{--y:1}.y18{--y:2}.y19{--y:3}.y20{--y:4}.y21{--y:5}
+.y22{--y:6}.y23{--y:7}.y24{--y:8}.y25{--y:9}.y26{--y:10}
+.e16{--e:0}.e17{--e:1}.e18{--e:2}.e19{--e:3}.e20{--e:4}.e21{--e:5}
+.e22{--e:6}.e23{--e:7}.e24{--e:8}.e25{--e:9}.e26{--e:10}
 .f1{--f:1}.f2{--f:2}.f3{--f:3}.f4{--f:4}.f5{--f:5}.f6{--f:6}
 .f7{--f:7}.f8{--f:8}.f9{--f:9}.f10{--f:10}.f11{--f:11}.f12{--f:12}
 .t1{--t:1}.t2{--t:2}.t3{--t:3}.t4{--t:4}.t5{--t:5}.t6{--t:6}
 .t7{--t:7}.t8{--t:8}.t9{--t:9}.t10{--t:10}.t11{--t:11}.t12{--t:12}
-.r1{--r:1}.r2{--r:2}.r3{--r:3}.r4{--r:4}.r5{--r:5}.r6{--r:6}
-.r7{--r:7}.r8{--r:8}.r9{--r:9}.r10{--r:10}.r11{--r:11}.r12{--r:12}
 
-/* Narrow screens: the chart becomes a small picture; the record gives the words. */
-@media (max-width: 59.99rem) {
-  .lb {
-    position: absolute;
-    width: 1px; height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    padding: 0;
-  }
-  .b.short { grid-column: var(--f) / calc(var(--t) + 1); }
-  .b.short::before { width: calc(100% - 2px); }
-  .b.short.led::before { align-self: flex-end; height: .5rem; }
-.short.role::before { width: 100%; }
-  .b.mark { grid-column: var(--f) / calc(var(--f) + 1); justify-content: center; }   /* dot centred in its month */
-  .role:not(.short)::after { border-width: 1.5px; }
-  .led:not(.short)::after { height: .25rem; }
-  .b.short.led::before { height: .25rem; }
-}
-@media (min-width: 60rem) {
-  .b:not(.short):not(.mark) { overflow: hidden; }
+@media (max-width: 15rem) {   /* only at extreme zoom */
+  .top ul { margin-inline: 0; }
+  .top ul a { padding-inline: .1rem; }
+  .mast { grid-template-columns: minmax(0, 1fr) 3rem; }
+  .mast-side .portrait { width: 3rem; }
 }
 
 /* ---------- the stories: one row each, kind and year, title, the question it opens on ---------- */
@@ -527,8 +420,12 @@ section > p { max-width: var(--prose); }
   border-top: 1px solid var(--rule);
 }
 .stories .kind { font-family: var(--sans); font-size: .875rem; line-height: 1.5; color: var(--muted); }
-.stories h3 { font-size: 1.25rem; font-weight: 600; }
-.stories h3 a { padding-block: .25rem; }
+.stories h3 { font-size: 1.25rem; font-weight: 600; line-height: 1.4; }
+/* The yellow is painted on the link's whole content box, which is taller than the line (34px of yellow on a 28px line at 20px type), so on a two-line title line two's yellow covered the descenders of line one, and the .25rem of vertical padding made it worse. The highlight is now a band 76% of that box, which is shorter than the line. */
+.stories h3 a { padding-block: 0; }
+.stories h3 a:hover, .stories h3 a:focus-visible {
+  background: linear-gradient(to bottom, transparent 12%, var(--hl) 12% 88%, transparent 88%);
+}
 .stories p { max-width: 34rem; font-size: 1rem; line-height: 1.5; }
 @media (max-width: 59.99rem) {
   .stories li { grid-template-columns: 9.5rem minmax(0, 1fr); }
@@ -546,7 +443,7 @@ section > p { max-width: var(--prose); }
 .rec h3 { font-weight: 700; font-size: 1.25rem; line-height: 1.5; }
 .rec .entry {
   display: grid;
-  grid-template-columns: 9.5rem minmax(0, 36rem) minmax(0, 1fr);
+  grid-template-columns: 9.5rem minmax(0, 36rem) minmax(7.5rem, 1fr);
   column-gap: 1.25rem;
   padding-block: .1875rem;
   font-size: 1rem;
@@ -554,7 +451,8 @@ section > p { max-width: var(--prose); }
 }
 .when, .where { font-family: var(--sans); font-size: .875rem; color: var(--muted); }
 .what strong { font-weight: 700; }
-.rec .entry > * { overflow-wrap: anywhere; }
+.rec .entry > * { overflow-wrap: break-word; }   /* not "anywhere": that lets a column shrink to one letter */
+.when { white-space: nowrap; }
 @media (max-width: 47.99rem) {
   .rec .yrow { grid-template-columns: minmax(0, 1fr); }
   .rec .entry {
@@ -569,10 +467,9 @@ section > p { max-width: var(--prose); }
   .where { margin-left: 1em; }
 }
 
+.passion ul { margin-top: 1rem; max-width: var(--prose); display: grid; gap: .5rem; }
 .small { margin-top: 2.5rem; }
-.small h3 { font-weight: 600; margin-bottom: .5rem; }
-.small ul { max-width: var(--prose); display: grid; gap: .5rem; }
-.small p { margin-top: 1.25rem; max-width: var(--prose); }
+.small p { max-width: var(--prose); }
 
 /* ---------- contact and footer ---------- */
 

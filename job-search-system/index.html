@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Job search system · Owen Stefanakos</title>
+<title>Building my job search with AI · Owen Stefanakos</title>
 <meta name="description" content="How Owen Stefanakos designed a job search system and built it with Claude Code: what it does, how it runs and what I found once I used it every day.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
@@ -11,7 +11,7 @@
 <!-- The social card needs full addresses; nothing on the page itself loads from them. -->
 <link rel="canonical" href="https://owenstef.github.io/job-search-system/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Job search system · Owen Stefanakos">
+<meta property="og:title" content="Building my job search with AI · Owen Stefanakos">
 <meta property="og:description" content="How Owen Stefanakos designed a job search system and built it with Claude Code: what it does, how it runs and what I found once I used it every day.">
 <meta property="og:url" content="https://owenstef.github.io/job-search-system/">
 <meta property="og:image" content="https://owenstef.github.io/img/card.png">
@@ -43,18 +43,20 @@
 <main id="main" class="wrap">
 <article>
 <header class="pagehead">
-<h1>Job search system</h1>
-<p class="lede">I wanted AI to take the busywork out of my job search. What I learned was to think through what the work really looks like.</p>
+<h1>Building my job search with AI</h1>
+<!-- OWEN: the home-page title and your line, used here too at your OK, 2026-11-17. -->
+<p class="lede">I wanted to work more efficiently. What I learned was to think through what the work really looks like first.</p>
 <p class="meta">October 2026</p>
 </header>
 
 <div class="body">
-<h2 id="what-i-wanted">What I wanted</h2>
+<!-- OWEN: the five section headers were drafted from your sentences on this page and approved by you on 2026-11-17. -->
+<h2 id="what-i-wanted">Less busywork, more people</h2>
 <!-- DRAFT, OWEN: "What I wanted" (first paragraph), "What I found" (before the list) and "What works" are your words from the session (2026-11-16), trimmed. The rest of the prose is mine; every fact in it was checked against the repo on 2026-11-16. -->
 <p>I wanted to use AI to make my job search more efficient. I knew I would spend hours on busywork, and I wanted to spend my time on what mattered: writing cover letters and talking to people, not scrolling through job boards and formatting resumes.</p>
 <p>A job search is three searches at once: a company doing work I care about, a role there I’d fit, and someone I know who works there. The best leads sit where all three meet. I wanted a system that looked for them every morning.</p>
 
-<h2 id="what-i-built">What I built</h2>
+<h2 id="what-i-built">I designed it, Claude built it</h2>
 <p>I’m not a software engineer, and I didn’t write the code. I designed the system and directed Claude Code to build it. My part was deciding what it should do and checking that it did.</p>
 <p>It has four parts:</p>
 <ul>
@@ -164,12 +166,12 @@
 <figcaption>The same page on a phone.</figcaption>
 </figure>
 
-<h2 id="how-it-runs">How it runs</h2>
+<h2 id="how-it-runs">Scripts for facts, models for judgment</h2>
 <p>Overnight, workflows fetch new postings. In the morning, one Claude session runs a routine: it checks that the fetch worked, hands the bulk reading to cheaper helper models and scores what’s left. Then I open the Desk.</p>
 <p>Scripts do the jobs that have one right answer: fetching, filtering, checking, copying data and the week’s numbers. Models only make judgment calls, like scoring fit, summarizing and drafting. If a script can produce a number, a script produces it.</p>
 <p>One rule is fixed: it never sends, submits or posts anything for me. Emails are drafts and applications are prepared; I press the buttons. The only exceptions reach me alone: my daily news digest, alerts on my phone, and events it adds to my own calendar.</p>
 
-<h2 id="what-i-found">What I found</h2>
+<h2 id="what-i-found">I overbuilt it</h2>
 <p>I overbuilt the workflow without improving my efficiency.</p>
 <p>I created a time-blocking system that never accurately ordered my priorities, and it ended up costing more time than it saved. The morning routine, while helpful, was prepping for interviews on jobs I hadn’t even looked at.</p>
 <p>What I learned was to think through what the work really looks like.</p>
@@ -180,22 +182,21 @@
 <li><strong>Failures were silent.</strong> One day in October the fetch didn’t run because a test failed, and nothing caught it until the morning routine, hours later. An audit also found steps that had been skipped for days. Now the main workflows each record a heartbeat as proof they ran, and a health board rates the system red, amber or green. It pings my phone only for red.</li>
 </ol>
 
-<h2 id="what-works">What works</h2>
+<h2 id="what-works">Now it’s a toolbox</h2>
 <p>By far the most efficient part has been storing and retrieving my own information and processes. I have a master resume I can tailor to any role, with strict guidelines for the copy and formatting. I have the context around my decisions, so that as I think about my next steps, it continues with me.</p>
 <p>These tools have become more dynamic as I’ve fine-tuned my process. I now work with a powerful toolbox instead of fighting a system.</p>
 </div>
 </article>
 
 <nav class="next" aria-label="Next page">
-<p>Next: <a href="../kitchens/">Find the gap and fill it</a></p>
+<p>Next: <a href="../thesis/">Critical Theory of Digital Lifeworlds</a></p>
 <p><a href="../">Home</a></p>
 </nav>
 </main>
 
 <footer class="wrap">
 <div class="foot">
-<p>Owen Stefanakos, San Francisco.</p>
-<p>Set in Besley and Archivo. Plain HTML and CSS, and nothing here tracks you. Updated November 2026.</p>
+<p>Owen Stefanakos, San Francisco. Updated November 2026.</p>
 </div>
 </footer>
 </body>
