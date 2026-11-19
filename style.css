@@ -315,7 +315,7 @@ section > p { max-width: var(--prose); }
 .tl {
   --yw: 14rem;                 /* one year */
   --mw: calc(var(--yw) / 12);  /* one month */
-  --lane: 1.5rem;
+  --lane: 2rem;
   margin-top: .75rem;
   font-family: var(--sans);
   direction: rtl;              /* a scroller that opens at its right (recent) end with no script; the content below is ltr again */
